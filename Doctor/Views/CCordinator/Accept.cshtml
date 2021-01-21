@@ -1,0 +1,53 @@
+﻿@model Doctor.ViewModel.AppointmentView
+@{
+    ViewBag.Title = "Apointment";
+}
+@Html.Partial("_nav");
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 mx-auto d-block shadow-lg p-3 mb-5 bg-white rounded ">
+            @*@if (ViewBag.Status == false)
+            {
+                <div class="alert-danger"><h5>@ViewBag.Message</h5></div>
+            }*@
+            <div class="card text-center mx-auto d-block" style="width: 18rem;">
+                <img class="card-img-top" src="@Url.Content(Model.Doctorses.DoctorImagePath)" alt="Card image cap">
+                <div class="card-body">
+
+                    <h5 class="card-title">@Model.Doctorses.DoctorName</h5>
+                    <p class="card-text">@Model.Doctorses.DoctorDegree</p>
+                    <p class="card-text">Available time: @Model.Doctorses.StartTime - @Model.Doctorses.EndTime</p>
+                </div>
+            </div>
+            <h3 class="h1 text-center"> Information </h3>
+            <br />
+            @using (Html.BeginForm("Accept", "CCordinator", new { @id = Model.Doctorses.Id, @ccEmail = @Model.CCordinator.CCordinatorEmail }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Patient.PatientEmail)
+                    @Html.TextBoxFor(model => model.Patient.PatientEmail, new { @class = "form-control", @placeholder = "Enter patient email" })
+                    @Html.ValidationMessageFor(model => model.Patient.PatientEmail, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Make Appointment" class="btn btn-outline-success mx-auto d-block" />
+                </div>
+            }
+            @if (ViewBag.Message != null && ViewBag.Status == false)
+            {
+                <div class="alert-danger rounded">
+                    <a class="text-light">@ViewBag.Message</a>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,89 @@
+﻿@model Doctor.Models.CCordinator
+@{
+    ViewBag.Title = "New";
+}
+@Html.Partial("_nav")
+<div class="container">
+    <div class="row">
+        <div class="col-md">
+            <h1></h1>
+        </div>
+        <div class="col-md-6">
+            @if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
+            {
+                if (ViewBag.Message != null)
+                {
+                    <br>
+                    <div class="alert alert-success">
+                        <p><strong>Success! </strong>@ViewBag.Message</p>
+                    </div>
+                }
+            }
+            else
+            {
+                using (Html.BeginForm("New", "CCordinator", FormMethod.Post, new { @encType = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <h3 class="text-center">WELCOME!</h3>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group col-auto">
+                            @Html.LabelFor(model => model.CCordinatorName, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CCordinatorName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter cordinator name" } })
+                                @Html.ValidationMessageFor(model => model.CCordinatorName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-auto">
+                            @Html.LabelFor(model => model.CCordinatorEmail, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CCordinatorEmail, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter cordinator email" } })
+                                @Html.ValidationMessageFor(model => model.CCordinatorEmail, "", new { @class = "text-danger" })
+                                @Html.ValidationMessage("EmailExist")
+                            </div>
+                        </div>
+
+                        <div class="form-group col-auto">
+                            @Html.LabelFor(model => model.CCordinatorPassword, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CCordinatorPassword, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter 8 characters password" } })
+                                @Html.ValidationMessageFor(model => model.CCordinatorPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-auto">
+                            @Html.LabelFor(model => model.CCordinatorConfirmPassword, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CCordinatorConfirmPassword, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter confirm password" } })
+                                @Html.ValidationMessageFor(model => model.CCordinatorConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @Html.HiddenFor(model => model.Id)
+                        <div class="form-group col-auto">
+                            <div class="col-md-10 text-center ">
+                                <input type="submit" value="SignUp" class="btn btn-outline-success btn-block" />
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height:100px"></div>
+                }
+                if (ViewBag.Message != null)
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error! </strong>@ViewBag.Message
+                    </div>
+                }
+            }
+        </div>
+        <div class="col-md">
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
