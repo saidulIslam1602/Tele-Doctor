@@ -1,452 +1,697 @@
-# 🏥 TeleDoctor Modern - AI-Powered Norwegian Healthcare Platform
+# TeleDoctor Modern - AI-Powered Healthcare Platform
 
 [![.NET 8](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![Azure OpenAI](https://img.shields.io/badge/Azure-OpenAI-green.svg)](https://azure.microsoft.com/en-us/products/cognitive-services/openai-service)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
-[![Norwegian](https://img.shields.io/badge/Language-Norwegian-red.svg)](https://www.regjeringen.no/no/id4/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## 🚀 Overview
+## Table of Contents
 
-TeleDoctor Modern is a cutting-edge, **AI-first telemedicine platform** specifically designed for the Norwegian healthcare system. Built with .NET 8 and Azure OpenAI (GPT-4), it showcases **advanced generative AI**, **RAG implementation**, **agentic workflows**, and **digital labor automation** for Norwegian healthcare professionals.
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [AI Features](#ai-features)
+- [Healthcare Integration](#healthcare-integration)
+- [Technology Stack](#technology-stack)
+- [Getting Started](#getting-started)
+- [Configuration](#configuration)
+- [Deployment](#deployment)
+- [Testing](#testing)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
+- [License](#license)
 
-### 🎯 **Perfect for DIPS AI Developer (KI-utvikler) Requirements**
+## Overview
 
-This project demonstrates expertise in:
-- ✅ **Generative AI Development** - GPT-4 integration with advanced prompt engineering
-- ✅ **AI Model Evaluation & Training** - Comprehensive framework for model assessment
-- ✅ **RAG Implementation** - Retrieval-Augmented Generation for medical knowledge
-- ✅ **Agentic AI Workflows** - Multi-agent systems for digital labor automation
-- ✅ **Norwegian Healthcare Expertise** - Deep integration with Helsenorge and Norwegian medical standards
-- ✅ **Modern .NET 8** - Clean architecture with production-ready deployment
-- ✅ **AI Tools Usage** - Active use of Cursor, Claude, and Azure OpenAI
+TeleDoctor Modern is an enterprise-grade, AI-first telemedicine platform built with .NET 8 and Azure OpenAI. The platform demonstrates advanced software engineering practices including:
 
-> **For detailed DIPS alignment analysis, see [DIPS_ALIGNMENT.md](DIPS_ALIGNMENT.md)**
+- Advanced generative AI integration for clinical workflows
+- RAG (Retrieval-Augmented Generation) for medical knowledge queries
+- Multi-agent orchestration systems for workflow automation
+- Comprehensive healthcare system integration
+- Production-ready deployment configurations
 
-## 🏗️ Architecture
+The platform is designed specifically for Norwegian healthcare requirements but can be adapted for other healthcare systems.
 
-### CleArchitecture Layers
+## Architecture
+
+### Clean Architecture Layers
+
+The application follows clean architecture principles with clear separation of concerns:
 
 ```
-├── 🎯 TeleDoctor.Core              # Domain entities and business rules
-├── 🧠 TeleDoctor.AI.Services       # AI/ML services and integrations
-│   ├── RAG/                        # Retrieval-Augmented Generation
-│   ├── ModelEvaluation/            # AI model evaluation framework
-│   ├── AgenticFlows/               # Multi-agent orchestration
-│   ├── DigitalLabor/               # Digital labor automation agents
-│   └── Services/                   # Clinical AI services
-├── 🇳🇴 TeleDoctor.Norwegian.Integration  # Norwegian healthcare system integration
-├── 📱 TeleDoctor.Application       # Application services and CQRS
-├── 🗄️ TeleDoctor.Infrastructure    # Data access and external services
-├── 🌐 TeleDoctor.WebAPI           # REST API endpoints
-└── 🖥️ TeleDoctor.BlazorUI         # Modern Blazor WebAssembly UI
+TeleDoctor.Modern/
+├── TeleDoctor.Core/                    # Domain Layer
+│   ├── Entities/                       # Domain entities
+│   ├── Enums/                          # Enumerations
+│   ├── ValueObjects/                   # Value objects
+│   └── Interfaces/                     # Domain interfaces
+│
+├── TeleDoctor.AI.Services/             # AI/ML Services Layer
+│   ├── RAG/                            # Retrieval-Augmented Generation
+│   ├── ModelEvaluation/                # AI model evaluation framework
+│   ├── AgenticFlows/                   # Multi-agent orchestration
+│   ├── DigitalLabor/                   # Automation agents
+│   ├── Services/                       # AI service implementations
+│   └── Configuration/                  # AI configuration
+│
+├── TeleDoctor.Norwegian.Integration/   # Healthcare Integration Layer
+│   ├── Services/                       # Integration services
+│   ├── Models/                         # Integration models
+│   └── Configuration/                  # Integration configuration
+│
+├── TeleDoctor.Application/             # Application Layer
+│   ├── Commands/                       # CQRS commands
+│   ├── Queries/                        # CQRS queries
+│   ├── DTOs/                           # Data transfer objects
+│   ├── Services/                       # Application services
+│   ├── Mappings/                       # AutoMapper profiles
+│   └── Validators/                     # FluentValidation validators
+│
+├── TeleDoctor.Infrastructure/          # Infrastructure Layer
+│   ├── Data/                           # EF Core DbContext
+│   ├── Repositories/                   # Repository implementations
+│   └── Services/                       # External service integrations
+│
+├── TeleDoctor.WebAPI/                  # Presentation Layer - API
+│   ├── Controllers/                    # API controllers
+│   ├── Hubs/                           # SignalR hubs
+│   └── Middleware/                     # Custom middleware
+│
+└── TeleDoctor.BlazorUI/                # Presentation Layer - Web UI
+    ├── Pages/                          # Blazor pages
+    ├── Components/                     # Reusable components
+    └── Services/                       # Frontend services
 ```
 
-### 🧠 AI-Powered Features
+### Design Patterns
 
-#### 1. **Clinical Decision Support System**
+- **Clean Architecture**: Dependency inversion and separation of concerns
+- **CQRS**: Command Query Responsibility Segregation with MediatR
+- **Repository Pattern**: Data access abstraction
+- **Unit of Work**: Transaction management
+- **Dependency Injection**: Built-in .NET DI container
+
+## AI Features
+
+### 1. Clinical Decision Support System
+
+Provides AI-assisted clinical analysis with the following capabilities:
+
 ```csharp
+/// <summary>
+/// Analyzes patient symptoms and provides clinical recommendations
+/// </summary>
+/// <param name="request">Clinical analysis request containing symptoms and patient history</param>
+/// <returns>Clinical analysis response with differential diagnoses and recommendations</returns>
 public async Task<ClinicalAnalysisResponse> AnalyzeSymptomsAsync(ClinicalAnalysisRequest request)
 {
-    // AI-powered symptom analysis with Norwegian language support
-    // - Differential diagnosis suggestions
-    // - Risk assessment and urgency scoring
-    // - Evidence-based recommendations
-    // - ICD-10 code suggestions
+    // Generate AI-powered symptom analysis
+    // Returns differential diagnoses with probability scores
+    // Provides evidence-based treatment recommendations
+    // Includes ICD-10 diagnostic codes
+    // Supports Norwegian and English languages
 }
 ```
 
-#### 2. **Intelligent Medical Documentation**
+**Features:**
+- Differential diagnosis suggestions with confidence scores
+- Risk assessment and urgency evaluation
+- Evidence-based treatment recommendations
+- ICD-10 code suggestions
+- Multi-language support
+
+### 2. RAG (Retrieval-Augmented Generation)
+
+Medical knowledge retrieval and generation system:
+
 ```csharp
-public async Task<ConsultationSummaryResponse> GenerateConsultationSummaryAsync(ConsultationSummaryRequest request)
+/// <summary>
+/// Queries medical knowledge base using RAG pattern
+/// </summary>
+/// <param name="question">Medical question in natural language</param>
+/// <param name="patientContext">Patient-specific context for personalized responses</param>
+/// <param name="language">Language code (default: Norwegian)</param>
+/// <returns>Evidence-based answer with source citations</returns>
+public async Task<MedicalRAGResponse> QueryMedicalKnowledgeAsync(
+    string question, 
+    string patientContext, 
+    string language = "no")
 {
-    // Automated SOAP note generation
-    // - Real-time transcription and summarization
-    // - Structured medical documentation
-    // - Bilingual support (Norwegian/English)
+    // Step 1: Generate query embedding
+    // Step 2: Retrieve relevant medical documents from vector database
+    // Step 3: Query Norwegian medical guidelines
+    // Step 4: Generate contextual answer using retrieved documents
+    // Step 5: Validate against medical standards
+    // Returns answer with confidence score and source citations
 }
 ```
 
-#### 3. **Medication Interaction Analysis**
+**Features:**
+- Vector search for semantic medical document retrieval
+- Integration with medical guideline databases
+- Confidence scoring and source attribution
+- Validation against medical standards
+
+### 3. AI Model Evaluation Framework
+
+Comprehensive system for evaluating AI model performance:
+
 ```csharp
-public async Task<MedicationInteractionResponse> CheckMedicationInteractionsAsync(MedicationInteractionRequest request)
+/// <summary>
+/// Evaluates AI model accuracy on clinical test cases
+/// </summary>
+/// <param name="modelId">Identifier of the AI model to evaluate</param>
+/// <param name="testCases">Collection of clinical test cases with ground truth</param>
+/// <returns>Evaluation results with accuracy metrics</returns>
+public async Task<ModelEvaluationResult> EvaluateClinicalAccuracyAsync(
+    string modelId, 
+    List<ClinicalTestCase> testCases)
 {
-    // AI-powered drug interaction checking
-    // - Norwegian medication database integration
-    // - Dosage recommendations
-    // - Alternative medication suggestions
+    // Evaluates model predictions against ground truth
+    // Calculates precision, recall, and F1 scores
+    // Measures language quality for Norwegian text
+    // Assesses safety and compliance
+    // Monitors for model drift
 }
 ```
 
-#### 4. **Medical Image Analysis**
+**Evaluation Metrics:**
+- Clinical accuracy (precision, recall, F1-score)
+- Language quality assessment
+- Performance metrics (latency, throughput)
+- Safety evaluation
+- Compliance validation
+- Continuous monitoring
+
+### 4. Multi-Agent Orchestration
+
+Coordinates multiple specialized AI agents for complex workflows:
+
 ```csharp
-public async Task<MedicalImageAnalysisResponse> AnalyzeMedicalImageAsync(MedicalImageAnalysisRequest request)
+/// <summary>
+/// Executes a healthcare workflow using multiple AI agents
+/// </summary>
+/// <param name="workflowType">Type of workflow to execute</param>
+/// <param name="context">Workflow execution context</param>
+/// <returns>Workflow execution results</returns>
+public async Task<AgentWorkflowResult> ExecuteWorkflowAsync(
+    string workflowType, 
+    Dictionary<string, object> context)
 {
-    // Computer vision for medical images
-    // - X-ray, MRI, CT scan analysis
-    // - Abnormality detection
-    // - Preliminary screening results
+    // Creates workflow with appropriate steps
+    // Coordinates multiple AI agents
+    // Manages inter-agent communication
+    // Handles failures and retries
+    // Returns comprehensive execution results
 }
 ```
 
-#### 5. **RAG (Retrieval-Augmented Generation)**
+**Available Agents:**
+- **SchedulingAgent**: Intelligent appointment scheduling and resource optimization
+- **DocumentationAgent**: Automated SOAP notes and medical documentation
+- **TriageAgent**: AI-powered patient triage and urgency assessment
+- **CommunicationAgent**: Automated patient communication
+- **AdministrativeAgent**: Billing, insurance, and compliance automation
+- **ClinicalDecisionAgent**: Diagnosis support and treatment recommendations
+
+### 5. Digital Labor Automation
+
+Specialized AI agents that automate routine healthcare tasks:
+
+**SchedulingAgent**
 ```csharp
-public async Task<MedicalRAGResponse> QueryMedicalKnowledgeAsync(string question, string patientContext)
+/// <summary>
+/// Finds optimal appointment slot based on multiple factors
+/// </summary>
+/// <param name="context">Scheduling context including patient needs and doctor availability</param>
+/// <returns>Recommended appointment slot with optimization score</returns>
+private async Task<Dictionary<string, object>> FindOptimalAppointmentSlotAsync(AgentContext context)
 {
-    // Retrieve relevant Norwegian medical guidelines
-    // Generate evidence-based answers with citations
-    // Validate against Helsedirektoratet standards
-    // Provide confidence scores and source attribution
+    // Analyzes patient symptoms and urgency
+    // Evaluates doctor specialization match
+    // Optimizes for clinic efficiency
+    // Considers patient preferences
+    // Returns optimal time slot with alternatives
 }
 ```
 
-#### 6. **AI Model Evaluation Framework**
+**DocumentationAgent**
 ```csharp
-public async Task<ModelEvaluationResult> EvaluateClinicalAccuracyAsync(string modelId, List<ClinicalTestCase> testCases)
+/// <summary>
+/// Generates structured SOAP notes from consultation data
+/// </summary>
+/// <param name="context">Consultation context including transcription</param>
+/// <returns>Structured SOAP note in Norwegian</returns>
+private async Task<Dictionary<string, object>> GenerateSOAPNoteAsync(AgentContext context)
 {
-    // Evaluate AI models on Norwegian medical test cases
-    // Measure clinical accuracy, Norwegian language quality
-    // Performance metrics (latency, throughput)
-    // Safety evaluation and compliance checking
-    // Continuous monitoring and model drift detection
+    // Extracts key information from consultation
+    // Generates structured SOAP format:
+    //   - Subjective: Patient's description
+    //   - Objective: Clinical findings
+    //   - Assessment: Diagnosis and evaluation
+    //   - Plan: Treatment and follow-up
+    // Follows Norwegian documentation standards
 }
 ```
 
-#### 7. **Agentic AI Workflows (Digital Labor)**
+**TriageAgent**
 ```csharp
-public async Task<AgentWorkflowResult> ExecuteWorkflowAsync(string workflowType, Dictionary<string, object> context)
+/// <summary>
+/// Performs AI-powered patient triage assessment
+/// </summary>
+/// <param name="context">Patient information and symptoms</param>
+/// <returns>Triage category and urgency assessment</returns>
+private async Task<Dictionary<string, object>> PerformTriageAsync(AgentContext context)
 {
-    // Multi-agent orchestration for healthcare workflows
-    // 6 specialized AI agents:
-    // - SchedulingAgent: Intelligent appointment scheduling
-    // - DocumentationAgent: Automated SOAP notes, discharge summaries
-    // - TriageAgent: AI-powered patient triage and urgency assessment
-    // - CommunicationAgent: Patient communication automation
-    // - AdministrativeAgent: Billing, insurance, compliance
-    // - ClinicalDecisionAgent: Diagnosis support and treatment recommendations
+    // Evaluates patient condition severity
+    // Assigns triage category (Red/Orange/Yellow/Green/Blue)
+    // Calculates urgency score (0-1 scale)
+    // Identifies red flags requiring immediate attention
+    // Follows Norwegian triage guidelines
 }
 ```
 
-### 🇳🇴 Norwegian Healthcare Integration
+## Healthcare Integration
 
-#### **Helsenorge Integration**
+### National Health Portal Integration
+
 ```csharp
-public class HelsenorgeIntegrationService : IHelsenorgeIntegrationService
+/// <summary>
+/// Retrieves patient data from national health portal
+/// </summary>
+/// <param name="personalNumber">Patient's national identification number</param>
+/// <returns>Comprehensive patient data including medical history</returns>
+public async Task<HelsenorgePatientData?> GetPatientDataAsync(string personalNumber)
 {
-    // Seamless integration with Norwegian health portal
-    // - Patient data synchronization
-    // - Medical history access
-    // - Appointment scheduling
-    // - E-prescription management
+    // Authenticates with national health portal API
+    // Retrieves patient demographics and medical history
+    // Fetches current medications and allergies
+    // Returns structured patient data
+    // Ensures GDPR compliance
 }
 ```
 
-#### **Norwegian Language AI**
-```csharp
-public class NorwegianLanguageService : INorwegianLanguageService
-{
-    // Advanced Norwegian NLP capabilities
-    // - Medical terminology translation
-    // - Symptom analysis in Norwegian
-    // - Cultural context understanding
-    // - Regulatory compliance
-}
-```
+**Integration Features:**
+- Patient medical history retrieval
+- Current medication information
+- Appointment synchronization
+- Electronic prescription management
+- Consultation summary submission
 
-## 🛠️ Technology Stack
+### Electronic Prescription System
 
-### **Backend**
-- **.NET 8** - Latest framework with performance improvements
-- **Entity Framework Core 8** - Modern ORM with advanced features
-- **MediatR** - CQRS pattern implementation
-- **AutoMapper** - Object-to-object mapping
-- **FluentValidation** - Input validation
-- **Serilog** - Structured logging
-- **SignalR** - Real-time communication
+- Integration with national e-prescription infrastructure
+- Automated prescription generation and validation
+- Drug interaction checking
+- Pharmacy coordination
 
-### **AI & Machine Learning**
-- **Azure OpenAI (GPT-4)** - Advanced language model
-- **Azure Cognitive Services** - Computer Vision, Text Analytics
-- **Microsoft Semantic Kernel** - AI orchestration
-- **Azure Translator** - Multi-language support
+## Technology Stack
 
-### **Frontend**
-- **Blazor WebAssembly** - Modern SPA framework
-- **MudBlazor** - Material Design components
-- **SignalR Client** - Real-time updates
-- **Progressive Web App** - Mobile-first design
+### Backend Technologies
+- **.NET 8**: Latest framework with native AOT and performance improvements
+- **Entity Framework Core 8**: Modern ORM with query optimization
+- **MediatR 12.x**: CQRS and mediator pattern implementation
+- **AutoMapper 12.x**: Object-object mapping
+- **FluentValidation 11.x**: Validation framework
+- **Serilog**: Structured logging
+- **SignalR**: Real-time bi-directional communication
 
-### **Infrastructure**
-- **Docker & Docker Compose** - Containerization
-- **SQL Server 2022** - Enterprise database
-- **Redis** - Caching and session management
-- **Nginx** - Reverse proxy and load balancing
-- **Elasticsearch & Kibana** - Logging and monitoring
+### AI & Machine Learning
+- **Azure OpenAI (GPT-4)**: Advanced language model for clinical AI
+- **Azure Cognitive Services**: Vision, Text Analytics, Translation
+- **Microsoft Semantic Kernel**: AI orchestration framework
+- **Vector Databases**: Semantic search implementation
+- **Custom Fine-tuned Models**: Healthcare-specific model training
 
-### **Norwegian Integrations**
-- **Helsenorge API** - National health portal
-- **E-Resept** - Electronic prescription system
-- **FHIR Norway** - Healthcare data standards
-- **Norwegian NLP Models** - Language processing
+### Frontend Technologies
+- **Blazor WebAssembly**: Modern SPA framework
+- **MudBlazor**: Material Design component library
+- **SignalR Client**: Real-time updates
+- **Progressive Web App (PWA)**: Mobile-first, installable application
 
-## 🚀 Quick Start
+### Infrastructure & DevOps
+- **Docker**: Containerization for all services
+- **Docker Compose**: Multi-container orchestration
+- **Kubernetes**: Production-grade container orchestration
+- **SQL Server 2022**: Enterprise database
+- **Redis**: Distributed caching and session management
+- **Nginx**: Reverse proxy and load balancing
+- **Elasticsearch**: Centralized logging
+- **Kibana**: Log visualization and analytics
+
+### Cloud Services
+- **Azure Container Registry**: Docker image storage
+- **Azure Container Apps**: Serverless container hosting
+- **Azure Kubernetes Service**: Managed Kubernetes
+- **Azure Key Vault**: Secrets management
+- **Application Insights**: Application performance monitoring
+- **Azure SQL Database**: Managed database service
+
+## Getting Started
 
 ### Prerequisites
-- .NET 8 SDK
-- Docker Desktop
-- SQL Server (or use Docker)
-- Azure OpenAI API key
-- Visual Studio 2022 or VS Code
 
-### 1. Clone and Setup
+- **.NET 8 SDK** - [Download](https://dotnet.microsoft.com/download/dotnet/8.0)
+- **Docker Desktop** - [Download](https://www.docker.com/products/docker-desktop)
+- **SQL Server** - Or use Docker container
+- **Azure OpenAI Access** - Required for AI features
+- **Visual Studio 2022** or **VS Code** - Recommended IDEs
+
+### Installation
+
+#### Option 1: Docker Compose (Recommended)
+
 ```bash
-git clone https://github.com/yourusername/teledoctor-modern.git
-cd teledoctor-modern
+# Clone the repository
+git clone https://github.com/saidulIslam1602/Tele-Doctor.git
+cd Tele-Doctor/TeleDoctor.Modern
+
+# Start all services
+docker-compose up -d
+
+# Verify services are running
+docker-compose ps
+
+# View logs
+docker-compose logs -f
 ```
 
-### 2. Configure AI Services
-Update `appsettings.json`:
+**Services Available:**
+- API: http://localhost:8080
+- Swagger UI: http://localhost:8080/swagger
+- Blazor UI: http://localhost:7000
+- SQL Server: localhost:1433
+- Redis: localhost:6379
+- Elasticsearch: http://localhost:9200
+- Kibana: http://localhost:5601
+
+#### Option 2: Local Development
+
+```bash
+# Navigate to project directory
+cd TeleDoctor.Modern
+
+# Restore dependencies
+dotnet restore
+
+# Configure user secrets for API
+cd src/TeleDoctor.WebAPI
+dotnet user-secrets init
+
+# Set Azure OpenAI credentials
+dotnet user-secrets set "AI:AzureOpenAI:Endpoint" "https://your-resource.openai.azure.com/"
+dotnet user-secrets set "AI:AzureOpenAI:ApiKey" "your-api-key"
+dotnet user-secrets set "AI:AzureOpenAI:ChatDeploymentName" "gpt-4"
+
+# Run database migrations
+dotnet ef database update
+
+# Start the API
+dotnet run
+
+# In a separate terminal, start the Blazor UI
+cd ../TeleDoctor.BlazorUI
+dotnet run
+```
+
+### Automated Setup
+
+```bash
+# Run the automated setup script
+./scripts/setup.sh
+
+# The script will:
+# - Check prerequisites
+# - Install dependencies
+# - Configure certificates
+# - Setup database
+# - Create development scripts
+```
+
+## Configuration
+
+### Application Settings
+
+Configure the application in `appsettings.json`:
+
 ```json
 {
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=TeleDoctorDB;Trusted_Connection=true;"
+  },
   "AI": {
     "AzureOpenAI": {
-      "Endpoint": "https://your-openai-resource.openai.azure.com/",
-      "ApiKey": "your-azure-openai-api-key",
-      "DeploymentName": "gpt-4"
+      "Endpoint": "https://your-resource.openai.azure.com/",
+      "ApiKey": "your-api-key",
+      "ChatDeploymentName": "gpt-4",
+      "Temperature": 0.3,
+      "MaxTokens": 4000
     }
   }
 }
 ```
 
-### 3. Run with Docker
+### Environment Variables
+
+For production deployment, use environment variables:
+
 ```bash
-docker-compose up -d
+export AI__AzureOpenAI__Endpoint="https://your-resource.openai.azure.com/"
+export AI__AzureOpenAI__ApiKey="your-api-key"
+export ConnectionStrings__DefaultConnection="your-connection-string"
 ```
 
-### 4. Access the Application
-- **API Documentation**: http://localhost:8080
-- **Blazor UI**: http://localhost:7000
-- **Health Checks**: http://localhost:8080/health
+### User Secrets (Development)
 
-## 🧪 AI Features Demo
+For local development, use .NET user secrets:
 
-### Clinical Decision Support
+```bash
+cd src/TeleDoctor.WebAPI
+dotnet user-secrets set "AI:AzureOpenAI:ApiKey" "your-api-key"
+```
+
+## Deployment
+
+### Docker Deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for comprehensive deployment instructions including:
+
+- Local Docker deployment
+- Azure Container Apps deployment
+- Azure Kubernetes Service deployment
+- CI/CD pipeline configuration
+- Monitoring and observability setup
+
+### Quick Docker Deploy
+
+```bash
+# Build and start all services
+docker-compose up -d
+
+# Scale services
+docker-compose up -d --scale teledoctor-api=3
+
+# View logs
+docker-compose logs -f teledoctor-api
+
+# Stop services
+docker-compose down
+```
+
+### Kubernetes Deployment
+
+```bash
+# Apply Kubernetes manifests
+kubectl apply -f k8s/
+
+# Check deployment status
+kubectl get pods -n teledoctor
+
+# View logs
+kubectl logs -f deployment/teledoctor-api -n teledoctor
+```
+
+## Testing
+
+### Running Tests
+
+```bash
+# Run all tests
+dotnet test
+
+# Run specific test project
+dotnet test tests/TeleDoctor.Tests.Unit
+
+# Run with coverage
+dotnet test --collect:"XPlat Code Coverage"
+```
+
+### Test Categories
+
+- **Unit Tests**: Business logic and domain model tests
+- **Integration Tests**: API endpoint and database tests
+- **AI Model Tests**: AI service validation and evaluation tests
+- **End-to-End Tests**: Complete workflow testing
+
+## API Documentation
+
+### Swagger/OpenAPI
+
+When running in development mode, Swagger UI is available at:
+- http://localhost:8080/swagger
+
+### Key Endpoints
+
+#### Authentication
+```http
+POST /api/auth/login
+POST /api/auth/register
+POST /api/auth/refresh-token
+```
+
+#### Appointments
+```http
+GET    /api/appointments
+POST   /api/appointments
+PUT    /api/appointments/{id}
+DELETE /api/appointments/{id}
+```
+
+#### AI Services
 ```http
 POST /api/ai/clinical-analysis
-Content-Type: application/json
-
-{
-  "symptoms": "Brystsmerter, kortpustethet, svimmelhet",
-  "patientHistory": "Hypertensjon, diabetes type 2",
-  "patientAge": 65,
-  "gender": "Mann",
-  "language": "no"
-}
-```
-
-**Response:**
-```json
-{
-  "differentialDiagnoses": [
-    {
-      "diagnosis": "Akutt koronarsyndrom",
-      "icd10Code": "I20.9",
-      "probability": 0.85,
-      "reasoning": "Typiske symptomer hos høyrisiko pasient"
-    }
-  ],
-  "urgency": {
-    "level": "Critical",
-    "score": 0.9,
-    "requiresImmediateAttention": true
-  }
-}
-```
-
-### Norwegian Symptom Checker
-```http
+POST /api/ai/rag/query
 POST /api/ai/symptom-checker
-Content-Type: application/json
-
-{
-  "symptoms": "Jeg har vondt i hodet og føler meg kvalm",
-  "language": "no"
-}
+POST /api/ai/medication-interaction
 ```
 
-## 🏥 Norwegian Healthcare Features
+#### Healthcare Integration
+```http
+GET  /api/integration/patient/{personalNumber}
+POST /api/integration/consultation-summary
+GET  /api/integration/medications/{personalNumber}
+```
 
-### **Helsenorge Integration**
-- Patient data synchronization
-- Medical history access
-- Appointment management
-- E-prescription handling
+### Authentication
 
-### **Norwegian Compliance**
-- GDPR compliance
-- Norwegian health data regulations
-- Secure patient data handling
-- Audit logging
+The API uses JWT bearer token authentication:
 
-### **Language Support**
-- Native Norwegian language processing
-- Medical terminology in Norwegian
-- Cultural context understanding
-- Automatic translation capabilities
+```http
+Authorization: Bearer <your-jwt-token>
+```
 
-## 📊 Performance & Scalability
+## Project Highlights
 
-### **Optimizations**
-- Async/await patterns throughout
-- Efficient database queries with EF Core
+### Advanced AI Implementation
+
+- **Generative AI**: Production-ready GPT-4 integration
+- **RAG System**: Evidence-based medical information retrieval
+- **Model Evaluation**: Comprehensive AI testing framework
+- **Multi-Agent Systems**: Coordinated AI agents for automation
+
+### Healthcare Domain Expertise
+
+- **Medical Workflows**: Complete telemedicine workflows
+- **Compliance**: GDPR and healthcare data regulations
+- **Integration**: National health system APIs
+- **Standards**: ICD-10, FHIR, medical terminology
+
+### Software Engineering Excellence
+
+- **Clean Code**: SOLID principles and design patterns
+- **Architecture**: Scalable, maintainable structure
+- **Testing**: Comprehensive test coverage
+- **Documentation**: Complete technical documentation
+- **DevOps**: CI/CD pipelines and deployment automation
+
+## Performance
+
+### Optimizations
+
+- Async/await patterns throughout the application
+- Database query optimization with EF Core
 - Redis caching for frequently accessed data
+- Response compression and minification
 - CDN integration for static assets
 
-### **Monitoring**
-- Application Insights integration
-- Structured logging with Serilog
-- Health checks for all services
-- Performance metrics tracking
+### Scalability
 
-### **Scalability**
-- Microservices-ready architecture
-- Docker containerization
 - Horizontal scaling support
 - Load balancing with Nginx
+- Database connection pooling
+- Distributed caching with Redis
+- Microservices-ready architecture
 
-## 🔒 Security
+## Security
 
-### **Authentication & Authorization**
+### Authentication & Authorization
 - JWT token-based authentication
 - Role-based access control (RBAC)
 - Multi-factor authentication support
-- Session management
+- Secure session management
 
-### **Data Protection**
-- Encryption at rest and in transit
+### Data Protection
+- Encryption at rest and in transit (TLS 1.3)
 - GDPR compliance features
-- Audit logging
-- Secure API endpoints
+- Audit logging for all operations
+- Data anonymization capabilities
+- Secure API endpoints with rate limiting
 
-### **Norwegian Compliance**
-- Helsenorge security standards
-- Norwegian health data regulations
-- Patient privacy protection
-- Secure communication protocols
+## Monitoring & Observability
 
-## 🧪 Testing
+### Logging
+- Structured logging with Serilog
+- Centralized logging with Elasticsearch
+- Log visualization with Kibana
 
-### **Unit Tests**
-```bash
-dotnet test TeleDoctor.Tests.Unit
-```
+### Monitoring
+- Application Insights integration
+- Performance metrics tracking
+- Health check endpoints
+- Custom telemetry
 
-### **Integration Tests**
-```bash
-dotnet test TeleDoctor.Tests.Integration
-```
+### Alerts
+- Automated alerting for system issues
+- Performance degradation detection
+- Error rate monitoring
 
-### **AI Model Tests**
-```bash
-dotnet test TeleDoctor.AI.Tests
-```
+## Contributing
 
-## 📈 Deployment
+We welcome contributions! Please follow these guidelines:
 
-### **Azure Deployment**
-```yaml
-# azure-pipelines.yml
-trigger:
-- main
+1. **Fork** the repository
+2. **Create** a feature branch from `develop`
+3. **Follow** coding standards and patterns
+4. **Add** tests for new features
+5. **Update** documentation as needed
+6. **Submit** a pull request
 
-pool:
-  vmImage: 'ubuntu-latest'
+### Coding Standards
 
-steps:
-- task: DotNetCoreCLI@2
-  displayName: 'Build'
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
+- Follow C# coding conventions
+- Use meaningful variable and method names
+- Add XML documentation comments for public APIs
+- Write unit tests for business logic
+- Keep methods focused and concise
 
-- task: Docker@2
-  displayName: 'Build and Push Docker Image'
-  inputs:
-    containerRegistry: 'your-acr'
-    repository: 'teledoctor-modern'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-```
+## License
 
-### **Kubernetes Deployment**
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: teledoctor-modern
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: teledoctor-modern
-  template:
-    metadata:
-      labels:
-        app: teledoctor-modern
-    spec:
-      containers:
-      - name: teledoctor-api
-        image: your-acr.azurecr.io/teledoctor-modern:latest
-        ports:
-        - containerPort: 8080
-```
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## 🤝 Contributing
+## Acknowledgments
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- Built with .NET 8 and modern software engineering practices
+- Powered by Azure OpenAI and Azure Cognitive Services
+- Designed for healthcare professionals and patients
+- Implements international healthcare standards
 
-## 📄 License
+## Support
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🎯 DIPS Alignment
-
-This project perfectly demonstrates the skills required for DIPS positions:
-
-### **Generative AI Expertise**
-- ✅ GPT-4 integration for clinical decision support
-- ✅ Custom AI models for healthcare use cases
-- ✅ Advanced prompt engineering for medical contexts
-- ✅ AI model fine-tuning and optimization
-
-### **Norwegian Healthcare Knowledge**
-- ✅ Helsenorge integration and Norwegian health standards
-- ✅ Norwegian language processing and medical terminology
-- ✅ GDPR and Norwegian health data compliance
-- ✅ E-Resept and FHIR Norway integration
-
-### **Modern Development Practices**
-- ✅ Clean architecture and SOLID principles
-- ✅ .NET 8 with latest features and performance improvements
-- ✅ Microservices-ready design
-- ✅ Comprehensive testing and CI/CD
-
-### **Production-Ready Solutions**
-- ✅ Docker containerization and Kubernetes deployment
-- ✅ Monitoring, logging, and observability
-- ✅ Security best practices and compliance
-- ✅ Scalable and maintainable codebase
+For questions, issues, or feature requests:
+- **Email**: saidulislambinalisayed@outlook.com
+- **GitHub Issues**: [Create an issue](https://github.com/saidulIslam1602/Tele-Doctor/issues)
+- **Documentation**: See docs folder for detailed guides
 
 ---
 
-## 📞 Contact
-
-**TeleDoctor Team**
-- Email: support@teledoctor.no
-- LinkedIn: [Your LinkedIn Profile]
-- GitHub: [Your GitHub Profile]
-
-**Built with ❤️ for Norwegian Healthcare** 🇳🇴
+**TeleDoctor Modern** - Advanced AI-powered healthcare platform built with modern technology stack

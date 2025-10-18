@@ -8,6 +8,11 @@ using TeleDoctor.AI.Services.Models;
 
 namespace TeleDoctor.AI.Services.Services;
 
+/// <summary>
+/// Provides AI-powered clinical decision support services using Azure OpenAI
+/// Implements advanced generative AI for symptom analysis, diagnosis suggestions,
+/// and automated medical documentation in Norwegian healthcare context
+/// </summary>
 public class ClinicalAIService : IClinicalAIService
 {
     private readonly OpenAIClient _openAIClient;
@@ -27,13 +32,22 @@ public class ClinicalAIService : IClinicalAIService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Analyzes patient symptoms using AI to provide clinical recommendations
+    /// </summary>
+    /// <param name="request">Clinical analysis request containing symptoms, patient history, and vitals</param>
+    /// <returns>Comprehensive clinical analysis with differential diagnoses and recommendations</returns>
     public async Task<ClinicalAnalysisResponse> AnalyzeSymptomsAsync(ClinicalAnalysisRequest request)
     {
         try
         {
+            // Get language-specific system prompt for clinical context
             var systemPrompt = GetClinicalAnalysisSystemPrompt(request.Language);
+            
+            // Build detailed user prompt with patient information
             var userPrompt = BuildClinicalAnalysisPrompt(request);
 
+            // Configure Azure OpenAI chat completion options
             var chatCompletionsOptions = new ChatCompletionsOptions()
             {
                 DeploymentName = _config.AzureOpenAI.ChatDeploymentName,
@@ -42,17 +56,19 @@ public class ClinicalAIService : IClinicalAIService
                     new ChatRequestSystemMessage(systemPrompt),
                     new ChatRequestUserMessage(userPrompt)
                 },
-                Temperature = (float)_config.AzureOpenAI.Temperature,
+                Temperature = (float)_config.AzureOpenAI.Temperature,      // Lower temp for medical accuracy
                 MaxTokens = _config.AzureOpenAI.MaxTokens,
                 NucleusSamplingFactor = (float)_config.AzureOpenAI.TopP
             };
 
+            // Call Azure OpenAI API to get clinical analysis
             var response = await _openAIClient.GetChatCompletionsAsync(chatCompletionsOptions);
             var content = response.Value.Choices[0].Message.Content;
 
+            // Parse AI response into structured clinical analysis
             var analysisResponse = ParseClinicalAnalysisResponse(content, request.Language);
             
-            // Translate to Norwegian if needed
+            // Translate to Norwegian if needed for bilingual support
             if (request.Language != "no" && _config.Norwegian.EnableAutoTranslation)
             {
                 analysisResponse = await TranslateClinicalAnalysisToNorwegian(analysisResponse);

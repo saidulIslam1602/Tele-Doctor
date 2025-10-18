@@ -7,15 +7,42 @@ using TeleDoctor.AI.Services.AgenticFlows;
 namespace TeleDoctor.AI.Services.DigitalLabor;
 
 /// <summary>
-/// Digital Labor Agents - AI assistants that automate routine healthcare tasks
-/// These agents free up healthcare professionals to focus on patient care
+/// Digital Labor Agents - Specialized AI assistants for healthcare automation
+/// 
+/// This module contains multiple specialized AI agents designed to automate routine
+/// healthcare tasks, reducing administrative burden and freeing healthcare professionals
+/// to focus on patient care.
+/// 
+/// Each agent is specialized for specific healthcare workflows:
+/// - SchedulingAgent: Optimizes appointment scheduling and resource allocation
+/// - DocumentationAgent: Automates medical documentation and note generation
+/// - TriageAgent: Performs intelligent patient triage and urgency assessment
+/// - CommunicationAgent: Handles patient communication and notifications
+/// - AdministrativeAgent: Manages billing, insurance, and compliance tasks
+/// - ClinicalDecisionAgent: Provides clinical decision support and recommendations
+/// 
+/// Agents can work independently or collaborate in multi-agent workflows coordinated
+/// by the HealthcareAgentOrchestrator service.
 /// </summary>
 
 #region Scheduling Agent
+/// <summary>
+/// Scheduling Agent - Intelligent appointment scheduling and resource optimization
+/// 
+/// This agent uses AI to optimize appointment scheduling by considering multiple factors:
+/// - Patient symptoms and urgency
+/// - Doctor specialization and availability
+/// - Clinic resource utilization
+/// - Patient preferences and history
+/// - Travel time and logistics
+/// 
+/// The agent can autonomously find optimal time slots, handle rescheduling,
+/// and coordinate resources for maximum efficiency while maintaining quality of care.
+/// </summary>
 public class SchedulingAgent : IHealthcareAgent
 {
     public string AgentId => "SchedulingAgent";
-    public string AgentName => "Timebestilling AI-assistent";
+    public string AgentName => "Appointment Scheduling Assistant";
     public string Capability => "Intelligent appointment scheduling and resource optimization";
 
     private readonly OpenAIClient _openAIClient;
@@ -88,13 +115,19 @@ public class SchedulingAgent : IHealthcareAgent
         };
     }
 
+    /// <summary>
+    /// Finds the optimal appointment slot based on multiple optimization factors
+    /// </summary>
+    /// <param name="context">Agent context containing patient information and constraints</param>
+    /// <returns>Recommended appointment slot with optimization score and alternatives</returns>
     private async Task<Dictionary<string, object>> FindOptimalAppointmentSlotAsync(AgentContext context)
     {
-        // AI-powered appointment optimization logic
+        // Use AI to analyze multiple factors and find optimal appointment time
+        // Considers patient urgency, doctor specialization, resource availability, and preferences
         var systemPrompt = @"
-            Du er en AI-assistent som optimaliserer timebestillinger i norsk helsevesen.
-            Analyser pasientens behov, doktorens spesialisering, hastegrad og tilgjengelighet.
-            Finn det mest optimale tidspunktet som balanserer pasientens behov og klinikkens effektivitet.
+            You are an AI assistant that optimizes healthcare appointment scheduling.
+            Analyze patient needs, doctor specialization, urgency level, and availability.
+            Find the most optimal time slot that balances patient needs and clinic efficiency.
         ";
 
         var userPrompt = $@"
@@ -179,10 +212,28 @@ public class SchedulingAgent : IHealthcareAgent
 #endregion
 
 #region Documentation Agent
+/// <summary>
+/// Documentation Agent - Automated clinical documentation and medical note generation
+/// 
+/// This agent automates the creation of medical documentation, significantly reducing
+/// the time healthcare professionals spend on administrative tasks. It generates
+/// structured clinical notes following established medical documentation standards.
+/// 
+/// Key capabilities:
+/// - Transcribe consultation audio/video to text
+/// - Generate structured SOAP notes (Subjective, Objective, Assessment, Plan)
+/// - Create discharge summaries with complete patient information
+/// - Prepare appointment documentation and instructions
+/// - Generate patient education materials
+/// - Ensure compliance with documentation standards
+/// 
+/// The agent uses advanced NLP to extract relevant clinical information and generate
+/// professional, compliant medical documentation in multiple languages.
+/// </summary>
 public class DocumentationAgent : IHealthcareAgent
 {
     public string AgentId => "DocumentationAgent";
-    public string AgentName => "Dokumentasjon AI-assistent";
+    public string AgentName => "Clinical Documentation Assistant";
     public string Capability => "Automated clinical documentation and note generation";
 
     private readonly OpenAIClient _openAIClient;
@@ -363,10 +414,28 @@ public class DocumentationAgent : IHealthcareAgent
 #endregion
 
 #region Triage Agent
+/// <summary>
+/// Triage Agent - AI-powered patient triage and urgency assessment
+/// 
+/// This agent implements intelligent patient triage using AI to assess urgency levels
+/// and prioritize patients based on clinical criteria. It follows established triage
+/// guidelines while leveraging AI to identify patterns and red flags that may require
+/// immediate medical attention.
+/// 
+/// Triage Categories (Norwegian/International standard):
+/// - Red (Critical): Life-threatening, immediate treatment required
+/// - Orange (Urgent): Serious condition, treatment within 10 minutes
+/// - Yellow (Semi-urgent): Urgent care needed, within 60 minutes
+/// - Green (Non-urgent): Less serious, within 120 minutes
+/// - Blue (Minor): Non-acute, within 240 minutes
+/// 
+/// The agent uses AI to analyze symptoms, vital signs, and patient history to assign
+/// appropriate triage categories with reasoning and confidence scores.
+/// </summary>
 public class TriageAgent : IHealthcareAgent
 {
     public string AgentId => "TriageAgent";
-    public string AgentName => "Triagering AI-assistent";
+    public string AgentName => "Patient Triage Assistant";
     public string Capability => "AI-powered patient triage and urgency assessment";
 
     private readonly OpenAIClient _openAIClient;

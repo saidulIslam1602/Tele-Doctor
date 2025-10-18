@@ -6,6 +6,13 @@ using TeleDoctor.AI.Services.Models;
 
 namespace TeleDoctor.AI.Services.ModelEvaluation;
 
+/// <summary>
+/// Comprehensive AI model evaluation service for healthcare applications
+/// Provides frameworks for evaluating clinical accuracy, performance metrics,
+/// language quality, safety assessment, and continuous monitoring
+/// Essential for maintaining high-quality AI models in production healthcare environments
+/// </summary>
+
 public interface IAIModelEvaluationService
 {
     Task<ModelEvaluationResult> EvaluateClinicalAccuracyAsync(string modelId, List<ClinicalTestCase> testCases);

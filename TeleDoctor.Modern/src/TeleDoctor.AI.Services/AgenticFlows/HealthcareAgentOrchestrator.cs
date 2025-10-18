@@ -7,8 +7,18 @@ using TeleDoctor.AI.Services.Configuration;
 namespace TeleDoctor.AI.Services.AgenticFlows;
 
 /// <summary>
-/// Orchestrates multiple AI agents to automate healthcare workflows
-/// Implements agentic AI patterns for digital labor in healthcare
+/// Healthcare Agent Orchestrator - Coordinates multiple AI agents for complex workflows
+/// 
+/// This service implements multi-agent orchestration patterns to automate healthcare processes.
+/// It coordinates specialized AI agents (scheduling, documentation, triage, etc.) to handle
+/// complex workflows that would traditionally require significant human effort.
+/// 
+/// Key capabilities:
+/// - Workflow execution with multiple coordinated agents
+/// - AI-powered task planning and decomposition
+/// - Inter-agent communication and collaboration
+/// - Error handling and workflow recovery
+/// - Performance tracking and optimization
 /// </summary>
 public interface IHealthcareAgentOrchestrator
 {

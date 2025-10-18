@@ -7,6 +7,12 @@ using TeleDoctor.AI.Services.Models;
 
 namespace TeleDoctor.AI.Services.RAG;
 
+/// <summary>
+/// Implements Retrieval-Augmented Generation (RAG) for medical knowledge queries
+/// Combines vector search with generative AI to provide evidence-based medical information
+/// with source citations and validation against medical standards
+/// </summary>
+
 public interface IMedicalRAGService
 {
     Task<MedicalRAGResponse> QueryMedicalKnowledgeAsync(string question, string patientContext, string language = "no");
@@ -38,22 +44,34 @@ public class MedicalRAGService : IMedicalRAGService
         _vectorSearch = vectorSearch;
     }
 
+    /// <summary>
+    /// Queries the medical knowledge base using RAG pattern
+    /// Retrieves relevant documents and generates contextual answers with AI
+    /// </summary>
+    /// <param name="question">Medical question in natural language</param>
+    /// <param name="patientContext">Patient-specific context for personalized responses</param>
+    /// <param name="language">Language code for response (default: Norwegian)</param>
+    /// <returns>Medical RAG response with answer, sources, and validation</returns>
     public async Task<MedicalRAGResponse> QueryMedicalKnowledgeAsync(string question, string patientContext, string language = "no")
     {
         try
         {
             _logger.LogInformation("Processing medical RAG query: {Question}", question);
 
-            // Step 1: Retrieve relevant medical documents
+            // Step 1: Retrieve relevant medical documents using vector search
+            // Uses embedding similarity to find most relevant content
             var relevantDocs = await RetrieveRelevantDocumentsAsync(question, 10);
 
-            // Step 2: Get Norwegian medical guidelines
+            // Step 2: Get official medical guidelines for the condition
+            // Retrieves guidelines from national health authorities
             var guidelines = await GetNorwegianGuidelinesAsync(ExtractConditionFromQuery(question));
 
-            // Step 3: Generate contextual answer
+            // Step 3: Generate contextual answer using retrieved documents
+            // Combines document content with AI to create evidence-based response
             var answer = await GenerateContextualAnswerAsync(question, relevantDocs, patientContext);
 
-            // Step 4: Validate against Norwegian medical standards
+            // Step 4: Validate generated answer against medical standards
+            // Ensures compliance with official guidelines and best practices
             var validation = await ValidateAgainstNorwegianStandardsAsync(answer, guidelines);
 
             var response = new MedicalRAGResponse
