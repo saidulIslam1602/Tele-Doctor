@@ -1,0 +1,50 @@
+services:
+  # SQL Server database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: teledoctor-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=TeleDoctor2024!
+      - MSSQL_PID=Developer
+    ports:
+      - "14330:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - teledoctor-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P TeleDoctor2024! -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # Redis cache
+  redis:
+    image: redis:7-alpine
+    container_name: teledoctor-redis
+    ports:
+      - "63790:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - teledoctor-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  sqlserver_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  teledoctor-network:
+    driver: bridge
