@@ -42,11 +42,20 @@ Advanced AI-powered telemedicine platform built with .NET 8, demonstrating moder
 - **Docker & Kubernetes** for deployment
 - **Blazor WebAssembly** for modern UI
 
+### Infrastructure Engineering
+- **Terraform IaC**: Production-grade infrastructure automation
+- **Hub-Spoke Network**: Azure VNet with BGP, Firewall, and VPN Gateway
+- **Kubernetes (AKS)**: Multi-zone clusters with Calico network policies
+- **Zero Trust Security**: Private endpoints, NSGs, and network segmentation
+- **CI/CD Pipelines**: Automated deployment with security scanning
+- **SRE Practices**: 99.9% SLO, incident management, on-call procedures
+
 ## Project Structure
 
 ```
 Tele-Doctor/
 ├── README.md                    (this file - overview)
+├── INFRASTRUCTURE_SUMMARY.md    (infrastructure engineering portfolio)
 ├── Screenshots/                 (application screenshots)
 └── TeleDoctor.Modern/          (complete implementation)
     ├── README.md               (detailed technical documentation)
@@ -55,6 +64,11 @@ Tele-Doctor/
     ├── DEPLOYMENT.md           (deployment guide)
     ├── TECHNICAL_OVERVIEW.md   (architecture details)
     ├── PROJECT_SUMMARY.md      (executive summary)
+    ├── infrastructure/         (Infrastructure as Code)
+    │   ├── terraform/          (Terraform modules & configs)
+    │   ├── ansible/            (Configuration management)
+    │   ├── NETWORK_ARCHITECTURE.md
+    │   └── SRE_PRACTICES.md
     ├── docker-compose.dev.yml  (development setup)
     ├── docker-compose.yml      (production setup)
     └── src/                    (source code - 7 projects)
@@ -95,6 +109,13 @@ See the [TeleDoctor.Modern](TeleDoctor.Modern/) directory for complete documenta
 - **TECHNICAL_OVERVIEW.md**: Architecture and design decisions
 - **PROJECT_SUMMARY.md**: Executive summary for stakeholders
 
+### Infrastructure Documentation
+
+- **[INFRASTRUCTURE_SUMMARY.md](INFRASTRUCTURE_SUMMARY.md)**: Infrastructure engineering portfolio
+- **[infrastructure/README.md](TeleDoctor.Modern/infrastructure/README.md)**: Infrastructure as Code guide
+- **[NETWORK_ARCHITECTURE.md](TeleDoctor.Modern/infrastructure/NETWORK_ARCHITECTURE.md)**: Network design and topology
+- **[SRE_PRACTICES.md](TeleDoctor.Modern/infrastructure/SRE_PRACTICES.md)**: Site Reliability Engineering practices
+
 ## Screenshots
 
 Application interface examples are available in the [Screenshots](Screenshots/) directory.
@@ -125,12 +146,14 @@ Application interface examples are available in the [Screenshots](Screenshots/) 
 ## Technology Demonstration
 
 This project showcases expertise in:
-- Advanced generative AI development
-- Healthcare domain knowledge
-- Modern .NET architecture
-- Clean code principles
-- Production deployment strategies
-- Comprehensive documentation
+- **Generative AI Development**: Multi-agent systems, RAG, GPT-4 integration
+- **Infrastructure Engineering**: Terraform, Azure networking, Kubernetes
+- **DevOps & SRE**: CI/CD pipelines, monitoring, incident management
+- **Healthcare Domain**: Norwegian integration, GDPR compliance, ICD-10
+- **Modern .NET Architecture**: Clean architecture, CQRS, microservices
+- **Network Engineering**: Hub-spoke topology, BGP, Zero Trust, firewalls
+- **Production Deployment**: Docker, Kubernetes, multi-region DR
+- **Comprehensive Documentation**: Architecture diagrams, runbooks, SLOs
 
 ## License
 

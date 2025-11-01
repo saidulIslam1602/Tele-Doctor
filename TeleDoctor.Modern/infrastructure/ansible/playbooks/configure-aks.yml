@@ -1,0 +1,329 @@
+---
+# Ansible Playbook for AKS Cluster Configuration
+# Deploys monitoring, security policies, and baseline applications
+
+- name: Configure Azure Kubernetes Service
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  
+  vars:
+    cluster_name: "aks-teledoctor-{{ environment }}"
+    resource_group: "rg-teledoctor-{{ environment }}-ne"
+    namespace_list:
+      - production
+      - staging
+      - monitoring
+      - security
+      - ingress-nginx
+    
+  tasks:
+    - name: Ensure required tools are installed
+      block:
+        - name: Check kubectl installation
+          command: kubectl version --client
+          register: kubectl_version
+          changed_when: false
+          failed_when: false
+        
+        - name: Check helm installation
+          command: helm version
+          register: helm_version
+          changed_when: false
+          failed_when: false
+        
+        - name: Install kubectl if not present
+          shell: |
+            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+            sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          when: kubectl_version.rc != 0
+        
+        - name: Install helm if not present
+          shell: |
+            curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+          when: helm_version.rc != 0
+
+    - name: Get AKS credentials
+      command: >
+        az aks get-credentials
+        --resource-group {{ resource_group }}
+        --name {{ cluster_name }}
+        --overwrite-existing
+      register: aks_credentials
+      changed_when: "'Merged' in aks_credentials.stderr"
+
+    - name: Create namespaces
+      kubernetes.core.k8s:
+        name: "{{ item }}"
+        api_version: v1
+        kind: Namespace
+        state: present
+      loop: "{{ namespace_list }}"
+
+    - name: Add Helm repositories
+      kubernetes.core.helm_repository:
+        name: "{{ item.name }}"
+        repo_url: "{{ item.url }}"
+      loop:
+        - name: prometheus-community
+          url: https://prometheus-community.github.io/helm-charts
+        - name: ingress-nginx
+          url: https://kubernetes.github.io/ingress-nginx
+        - name: jetstack
+          url: https://charts.jetstack.io
+        - name: bitnami
+          url: https://charts.bitnami.com/bitnami
+
+    - name: Deploy kube-prometheus-stack
+      kubernetes.core.helm:
+        name: prometheus
+        chart_ref: prometheus-community/kube-prometheus-stack
+        release_namespace: monitoring
+        create_namespace: true
+        values:
+          prometheus:
+            prometheusSpec:
+              retention: 30d
+              storageSpec:
+                volumeClaimTemplate:
+                  spec:
+                    accessModes: ["ReadWriteOnce"]
+                    resources:
+                      requests:
+                        storage: 50Gi
+          grafana:
+            adminPassword: "{{ lookup('env', 'GRAFANA_ADMIN_PASSWORD') | default('ChangeMe123!', true) }}"
+            ingress:
+              enabled: true
+              ingressClassName: nginx
+              hosts:
+                - grafana.teledoctor.internal
+          alertmanager:
+            config:
+              global:
+                resolve_timeout: 5m
+              route:
+                group_by: ['alertname', 'cluster', 'service']
+                group_wait: 10s
+                group_interval: 10s
+                repeat_interval: 12h
+                receiver: 'default'
+              receivers:
+                - name: 'default'
+                  email_configs:
+                    - to: 'ops-team@teledoctor.no'
+
+    - name: Deploy NGINX Ingress Controller
+      kubernetes.core.helm:
+        name: ingress-nginx
+        chart_ref: ingress-nginx/ingress-nginx
+        release_namespace: ingress-nginx
+        create_namespace: true
+        values:
+          controller:
+            replicaCount: 3
+            service:
+              annotations:
+                service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
+            metrics:
+              enabled: true
+              serviceMonitor:
+                enabled: true
+            autoscaling:
+              enabled: true
+              minReplicas: 3
+              maxReplicas: 10
+              targetCPUUtilizationPercentage: 70
+
+    - name: Deploy cert-manager
+      kubernetes.core.helm:
+        name: cert-manager
+        chart_ref: jetstack/cert-manager
+        release_namespace: cert-manager
+        create_namespace: true
+        values:
+          installCRDs: true
+          prometheus:
+            enabled: true
+            servicemonitor:
+              enabled: true
+
+    - name: Apply Network Policies
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '../manifests/network-policies.yaml') }}"
+
+    - name: Apply Resource Quotas
+      kubernetes.core.k8s:
+        state: present
+        namespace: "{{ item }}"
+        definition:
+          apiVersion: v1
+          kind: ResourceQuota
+          metadata:
+            name: resource-quota
+          spec:
+            hard:
+              requests.cpu: "100"
+              requests.memory: "200Gi"
+              limits.cpu: "200"
+              limits.memory: "400Gi"
+              persistentvolumeclaims: "10"
+      loop:
+        - production
+        - staging
+
+    - name: Apply Pod Security Policies
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '../manifests/pod-security-policies.yaml') }}"
+
+    - name: Deploy External Secrets Operator
+      kubernetes.core.helm:
+        name: external-secrets
+        chart_ref: external-secrets/external-secrets
+        release_namespace: external-secrets
+        create_namespace: true
+
+    - name: Create Azure Key Vault Secret Store
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: external-secrets.io/v1beta1
+          kind: SecretStore
+          metadata:
+            name: azure-keyvault
+            namespace: production
+          spec:
+            provider:
+              azurekv:
+                authType: ManagedIdentity
+                vaultUrl: "https://kv-teledoctor-{{ environment }}.vault.azure.net"
+                identityId: "{{ lookup('env', 'MANAGED_IDENTITY_CLIENT_ID') }}"
+
+- name: Configure monitoring and alerting
+  hosts: localhost
+  connection: local
+  
+  tasks:
+    - name: Create Prometheus ServiceMonitors
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '../manifests/servicemonitors.yaml') }}"
+    
+    - name: Create Grafana Dashboards ConfigMap
+      kubernetes.core.k8s:
+        state: present
+        namespace: monitoring
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: grafana-dashboards
+            labels:
+              grafana_dashboard: "1"
+          data:
+            teledoctor-api-dashboard.json: "{{ lookup('file', '../dashboards/api-dashboard.json') }}"
+            teledoctor-infrastructure-dashboard.json: "{{ lookup('file', '../dashboards/infrastructure-dashboard.json') }}"
+
+    - name: Configure AlertManager
+      kubernetes.core.k8s:
+        state: present
+        namespace: monitoring
+        definition:
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: alertmanager-config
+          stringData:
+            alertmanager.yaml: |
+              global:
+                resolve_timeout: 5m
+                slack_api_url: "{{ lookup('env', 'SLACK_WEBHOOK_URL') }}"
+              
+              route:
+                group_by: ['alertname', 'cluster', 'service']
+                group_wait: 10s
+                group_interval: 10s
+                repeat_interval: 12h
+                receiver: 'slack-notifications'
+                routes:
+                  - match:
+                      severity: critical
+                    receiver: 'pagerduty'
+                  - match:
+                      severity: warning
+                    receiver: 'slack-notifications'
+              
+              receivers:
+                - name: 'slack-notifications'
+                  slack_configs:
+                    - channel: '#alerts'
+                      title: 'TeleDoctor Alert'
+                      text: '{{ `{{ range .Alerts }}{{ .Annotations.description }}{{ end }}` }}'
+                
+                - name: 'pagerduty'
+                  pagerduty_configs:
+                    - service_key: "{{ lookup('env', 'PAGERDUTY_SERVICE_KEY') }}"
+
+- name: Apply security best practices
+  hosts: localhost
+  connection: local
+  
+  tasks:
+    - name: Enable Pod Security Standards
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: "{{ item }}"
+            labels:
+              pod-security.kubernetes.io/enforce: restricted
+              pod-security.kubernetes.io/audit: restricted
+              pod-security.kubernetes.io/warn: restricted
+      loop:
+        - production
+        - staging
+
+    - name: Deploy Falco for runtime security
+      kubernetes.core.helm:
+        name: falco
+        chart_ref: falcosecurity/falco
+        release_namespace: security
+        create_namespace: true
+        values:
+          falco:
+            grpc:
+              enabled: true
+            grpc_output:
+              enabled: true
+
+    - name: Create default deny-all network policy
+      kubernetes.core.k8s:
+        state: present
+        namespace: "{{ item }}"
+        definition:
+          apiVersion: networking.k8s.io/v1
+          kind: NetworkPolicy
+          metadata:
+            name: default-deny-all
+          spec:
+            podSelector: {}
+            policyTypes:
+              - Ingress
+              - Egress
+      loop:
+        - production
+        - staging
+
+    - name: Display cluster information
+      command: kubectl cluster-info
+      register: cluster_info
+      changed_when: false
+    
+    - name: Show cluster info
+      debug:
+        msg: "{{ cluster_info.stdout_lines }}"
+

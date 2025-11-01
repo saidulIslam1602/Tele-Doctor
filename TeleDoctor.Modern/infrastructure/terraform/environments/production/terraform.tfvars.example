@@ -1,0 +1,72 @@
+# TeleDoctor Production Environment Configuration
+# Copy this file to terraform.tfvars and update with actual values
+
+environment    = "production"
+location       = "norwayeast"
+location_short = "ne"
+
+# Network Configuration
+hub_vnet_address_space = ["10.0.0.0/16"]
+spoke_vnet_address_spaces = {
+  production = ["10.1.0.0/16"]
+  staging    = ["10.2.0.0/16"]
+}
+
+enable_azure_firewall = true
+enable_vpn_gateway    = true
+enable_bastion        = true
+
+# AKS Configuration
+kubernetes_version         = "1.28"
+system_node_pool_vm_size   = "Standard_D4s_v3"
+system_node_pool_count     = 3
+system_node_pool_min_count = 3
+system_node_pool_max_count = 10
+
+user_node_pools = {
+  application = {
+    vm_size             = "Standard_D8s_v3"
+    node_count          = 3
+    enable_auto_scaling = true
+    min_count           = 3
+    max_count           = 20
+    max_pods            = 110
+    node_labels = {
+      "workload" = "application"
+    }
+    node_taints = []
+    zones       = ["1", "2", "3"]
+  }
+}
+
+# SQL Database Configuration
+sql_admin_username = "sqladmin"
+# sql_admin_password = "CHANGE_ME_SECURE_PASSWORD" # Use Azure Key Vault or environment variable
+sql_sku_name       = "GP_Gen5_4"
+sql_max_size_gb    = 250
+
+# Redis Configuration
+redis_sku_name  = "Premium"
+redis_capacity  = 1
+redis_family    = "P"
+
+# Monitoring Configuration
+log_analytics_sku            = "PerGB2018"
+log_analytics_retention_days = 90
+
+alert_email_receivers = [
+  "ops-team@teledoctor.no",
+  "devops@teledoctor.no"
+]
+
+# Container Registry
+acr_sku                = "Premium"
+enable_geo_replication = true
+
+# Tags
+tags = {
+  Department = "IT"
+  Owner      = "DevOps Team"
+  CostCenter = "Healthcare"
+}
+
