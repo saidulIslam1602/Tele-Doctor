@@ -2,13 +2,17 @@
 
 [![.NET 8](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![Azure OpenAI](https://img.shields.io/badge/Azure-OpenAI-green.svg)](https://azure.microsoft.com/en-us/products/cognitive-services/openai-service)
+[![Terraform](https://img.shields.io/badge/Terraform-1.6+-purple.svg)](https://www.terraform.io/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-1.28+-blue.svg)](https://kubernetes.io/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![Version](https://img.shields.io/badge/Version-2.0.0-brightgreen.svg)](../CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## Table of Contents
 
 - [Overview](#overview)
 - [Architecture](#architecture)
+- [Infrastructure](#infrastructure)
 - [AI Features](#ai-features)
 - [Healthcare Integration](#healthcare-integration)
 - [Technology Stack](#technology-stack)
@@ -27,10 +31,15 @@ TeleDoctor Modern is an enterprise-grade, AI-first telemedicine platform built w
 - Advanced generative AI integration for clinical workflows
 - RAG (Retrieval-Augmented Generation) for medical knowledge queries
 - Multi-agent orchestration systems for workflow automation
+- Production-grade infrastructure automation with Terraform
 - Comprehensive healthcare system integration
+- Enterprise DevOps and SRE practices
 - Production-ready deployment configurations
 
 The platform is designed specifically for Norwegian healthcare requirements but can be adapted for other healthcare systems.
+
+**Version**: 2.0.0  
+**Infrastructure**: Production-ready with Terraform, Kubernetes, and comprehensive monitoring
 
 ## Architecture
 
@@ -90,6 +99,52 @@ TeleDoctor.Modern/
 - **Repository Pattern**: Data access abstraction
 - **Unit of Work**: Transaction management
 - **Dependency Injection**: Built-in .NET DI container
+
+## Infrastructure
+
+### Infrastructure as Code
+
+Complete production-grade infrastructure implementation using Terraform and Ansible.
+
+**Location**: `infrastructure/`
+
+**Key Components**:
+- Hub-spoke network architecture with Azure Firewall and VPN Gateway
+- Azure Kubernetes Service (AKS) with multi-zone deployment
+- Comprehensive monitoring with Prometheus and Grafana
+- Zero Trust Network Access (ZTNA) implementation
+- CI/CD pipeline with security scanning
+- SRE practices with 99.9% availability SLO
+
+**Documentation**:
+- [Infrastructure Guide](infrastructure/README.md) - Complete infrastructure documentation
+- [Network Architecture](infrastructure/NETWORK_ARCHITECTURE.md) - Network design and topology
+- [SRE Practices](infrastructure/SRE_PRACTICES.md) - Operations and incident management
+- [Quick Start](infrastructure/QUICK_START.md) - 25-minute deployment guide
+
+**Terraform Modules**:
+- **Networking**: Hub-spoke VNet, Azure Firewall, VPN Gateway, NSGs
+- **AKS**: Kubernetes cluster with Azure CNI and Calico policies
+- **Monitoring**: Log Analytics, Application Insights, Prometheus
+- **SQL**: Azure SQL Database with private endpoints
+- **Redis**: Redis Cache with zone redundancy
+- **KeyVault**: Azure Key Vault for secrets management
+
+**Technology Stack**:
+- Terraform 1.6+ for infrastructure provisioning
+- Ansible 2.15+ for configuration management
+- GitHub Actions for CI/CD automation
+- Azure as primary cloud platform
+
+**Quick Deploy**:
+```bash
+cd infrastructure/terraform
+terraform init
+terraform plan -var-file="environments/production/terraform.tfvars"
+terraform apply -var-file="environments/production/terraform.tfvars"
+```
+
+See [infrastructure/README.md](infrastructure/README.md) for complete deployment instructions.
 
 ## AI Features
 

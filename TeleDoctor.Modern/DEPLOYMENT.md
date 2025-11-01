@@ -1,8 +1,13 @@
-# 🚀 TeleDoctor Modern - Deployment Guide
+# TeleDoctor Modern - Deployment Guide
 
-This guide covers deployment options for TeleDoctor Modern, from local development to production Azure deployment.
+This guide covers deployment options for TeleDoctor Modern, from local development to production Azure deployment using both traditional methods and modern Infrastructure as Code.
 
-## 📋 Table of Contents
+**Version**: 2.0.0  
+**Last Updated**: 2024-11-01
+
+## Table of Contents
+
+- [Infrastructure as Code Deployment](#infrastructure-as-code-deployment)
 
 - [Prerequisites](#prerequisites)
 - [Local Development](#local-development)
@@ -14,7 +19,42 @@ This guide covers deployment options for TeleDoctor Modern, from local developme
 - [Security Configuration](#security-configuration)
 - [Troubleshooting](#troubleshooting)
 
-## 🛠️ Prerequisites
+## Infrastructure as Code Deployment
+
+**Recommended for Production**: Use the complete Infrastructure as Code solution for production deployments.
+
+### Quick Infrastructure Deployment
+
+For complete infrastructure deployment using Terraform and Ansible, see:
+
+- [Infrastructure README](infrastructure/README.md) - Complete infrastructure guide
+- [Quick Start Guide](infrastructure/QUICK_START.md) - 25-minute deployment
+- [Network Architecture](infrastructure/NETWORK_ARCHITECTURE.md) - Network design documentation
+- [SRE Practices](infrastructure/SRE_PRACTICES.md) - Operational procedures
+
+**Infrastructure Includes**:
+- Hub-spoke network topology with Azure Firewall
+- VPN Gateway with BGP support
+- Azure Kubernetes Service (AKS) with multi-zone deployment
+- Monitoring stack (Prometheus, Grafana, Application Insights)
+- CI/CD pipeline with security scanning
+- Zero Trust Network Access implementation
+
+**Quick Deploy**:
+```bash
+cd infrastructure/terraform
+terraform init
+terraform apply -var-file="environments/production/terraform.tfvars"
+
+cd ../ansible
+ansible-playbook -i inventory/hosts.yml playbooks/configure-aks.yml
+```
+
+For detailed instructions, refer to [infrastructure/README.md](infrastructure/README.md).
+
+---
+
+## Prerequisites
 
 ### Development Environment
 - .NET 8 SDK
@@ -31,7 +71,9 @@ This guide covers deployment options for TeleDoctor Modern, from local developme
 - Azure Key Vault
 - Application Insights
 
-## 💻 Local Development
+**Note**: These resources can be automatically provisioned using the Terraform infrastructure in `infrastructure/terraform/`. See [Infrastructure as Code Deployment](#infrastructure-as-code-deployment) above.
+
+## Local Development
 
 ### 1. Quick Start
 ```bash
@@ -69,7 +111,7 @@ dotnet run
 - **Swagger**: https://localhost:7001/swagger
 - **Blazor UI**: https://localhost:7000
 
-## 🐳 Docker Deployment
+## Docker Deployment
 
 ### 1. Build and Run with Docker Compose
 ```bash
@@ -112,7 +154,7 @@ docker run -d \
 - kibana             # Log visualization
 ```
 
-## ☁️ Azure Cloud Deployment
+## Azure Cloud Deployment
 
 ### 1. Azure Resources Setup
 ```bash
@@ -193,7 +235,7 @@ az keyvault secret set --vault-name teledoctor-keyvault --name "ConnectionString
 az keyvault secret set --vault-name teledoctor-keyvault --name "JwtSettings-SecretKey" --value "your-jwt-secret-key"
 ```
 
-## ⚓ Kubernetes Deployment
+## Kubernetes Deployment
 
 ### 1. AKS Cluster Setup
 ```bash
@@ -339,7 +381,16 @@ kubectl get ingress -n teledoctor
 kubectl logs -f deployment/teledoctor-api -n teledoctor
 ```
 
-## 🔄 CI/CD Pipeline
+## CI/CD Pipeline
+
+**Note**: A comprehensive infrastructure CI/CD pipeline is available at `.github/workflows/infrastructure-deploy.yml` with:
+- Terraform validation and security scanning
+- Automated deployment to multiple environments
+- Cost estimation and security compliance checks
+
+See [Infrastructure README](infrastructure/README.md) for CI/CD pipeline details.
+
+### Application CI/CD Pipeline
 
 ### 1. GitHub Actions Workflow
 ```yaml
@@ -477,7 +528,17 @@ stages:
               imageToDeploy: '$(containerRegistry)/$(imageRepository):$(Build.BuildId)'
 ```
 
-## 📊 Monitoring & Observability
+## Monitoring and Observability
+
+**Infrastructure Monitoring**: Complete monitoring stack is automatically deployed via infrastructure code, including:
+- Prometheus for metrics collection
+- Grafana for visualization
+- AlertManager for alerting
+- Application Insights for APM
+
+For monitoring configuration and SRE practices, see [SRE_PRACTICES.md](infrastructure/SRE_PRACTICES.md).
+
+### Application Monitoring
 
 ### 1. Application Insights Setup
 ```csharp
@@ -538,7 +599,17 @@ grafana:
     - GF_SECURITY_ADMIN_PASSWORD=admin
 ```
 
-## 🔒 Security Configuration
+## Security Configuration
+
+**Infrastructure Security**: Zero Trust Network Access (ZTNA) is implemented via infrastructure code:
+- Private endpoints for all Azure PaaS services
+- Network Security Groups with deny-by-default policies
+- Azure Firewall for centralized security
+- Calico network policies in Kubernetes
+
+See [NETWORK_ARCHITECTURE.md](infrastructure/NETWORK_ARCHITECTURE.md) for complete security architecture.
+
+### Application Security
 
 ### 1. Production Security Settings
 ```json
@@ -592,7 +663,13 @@ spec:
       port: 8080
 ```
 
-## 🔧 Troubleshooting
+## Troubleshooting
+
+**Infrastructure Troubleshooting**: See [infrastructure/QUICK_START.md](infrastructure/QUICK_START.md) for common infrastructure issues and solutions.
+
+**Operational Runbooks**: See [infrastructure/SRE_PRACTICES.md](infrastructure/SRE_PRACTICES.md) for operational procedures.
+
+### Application Troubleshooting
 
 ### Common Issues
 
@@ -695,4 +772,14 @@ For deployment issues or questions:
 
 ---
 
-**Happy Deploying! 🚀**
+## Additional Resources
+
+- [Infrastructure Guide](infrastructure/README.md) - Complete infrastructure documentation
+- [Network Architecture](infrastructure/NETWORK_ARCHITECTURE.md) - Network topology and design
+- [SRE Practices](infrastructure/SRE_PRACTICES.md) - Operations and incident management
+- [Quick Start](infrastructure/QUICK_START.md) - Fast infrastructure deployment
+- [CHANGELOG.md](../CHANGELOG.md) - Version history and release notes
+
+For the latest updates and version information, see [CHANGELOG.md](../CHANGELOG.md).
+
+**Current Version**: 2.0.0 (Infrastructure Engineering Enhancement)
