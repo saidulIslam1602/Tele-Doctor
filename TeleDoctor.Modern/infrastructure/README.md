@@ -8,8 +8,12 @@ This directory contains the complete Infrastructure as Code (IaC) implementation
 
 - **Hub-Spoke Network Topology** with Azure Firewall and VPN Gateway
 - **Zero Trust Network Access (ZTNA)** implementation
+- **Multi-cloud deployment** across Azure, GCP, and AWS
+- **Hybrid connectivity** with ExpressRoute, Cloud Interconnect, and Transit Gateway
+- **BGP routing** across multiple clouds (ASN: 65515, 65516, 64512)
 - **Multi-region deployment** with disaster recovery
 - **Kubernetes orchestration** with advanced networking (Calico)
+- **Virtual WAN** for global transit connectivity
 - **Comprehensive monitoring** and observability
 - **Automated deployment** with CI/CD pipelines
 - **Configuration management** with Ansible
@@ -29,7 +33,12 @@ infrastructure/
 │   │   ├── sql/                 # Azure SQL Database
 │   │   ├── redis/               # Redis Cache
 │   │   ├── keyvault/            # Azure Key Vault
-│   │   └── acr/                 # Container Registry
+│   │   ├── acr/                 # Container Registry
+│   │   ├── expressroute/        # ExpressRoute connectivity
+│   │   └── virtualwan/          # Virtual WAN global transit
+│   ├── multi-cloud/             # Multi-cloud implementations
+│   │   ├── gcp/                 # Google Cloud Platform (DR)
+│   │   └── aws/                 # Amazon Web Services (alternative)
 │   └── environments/            # Environment-specific configs
 │       ├── production/
 │       ├── staging/
@@ -41,6 +50,7 @@ infrastructure/
 │   │   └── hosts.yml          # Host definitions
 │   └── manifests/              # Kubernetes manifests
 ├── NETWORK_ARCHITECTURE.md     # Network architecture documentation
+├── MULTI_CLOUD_ARCHITECTURE.md # Multi-cloud design and connectivity
 ├── SRE_PRACTICES.md            # SRE practices and runbooks
 └── README.md                   # This file
 ```
@@ -344,9 +354,11 @@ kubectl rollout status deployment/teledoctor-api -n production
 
 ## 📖 Documentation
 
-- **[NETWORK_ARCHITECTURE.md](NETWORK_ARCHITECTURE.md)**: Detailed network design
+- **[NETWORK_ARCHITECTURE.md](NETWORK_ARCHITECTURE.md)**: Detailed Azure network design
+- **[MULTI_CLOUD_ARCHITECTURE.md](MULTI_CLOUD_ARCHITECTURE.md)**: Multi-cloud strategy and connectivity
 - **[SRE_PRACTICES.md](SRE_PRACTICES.md)**: SRE practices and incident management
-- **Module READMEs**: Each Terraform module has its own documentation
+- **[QUICK_START.md](QUICK_START.md)**: 25-minute deployment guide
+- **Module READMEs**: Each Terraform module and cloud implementation has documentation
 
 ## 🧪 Testing
 
