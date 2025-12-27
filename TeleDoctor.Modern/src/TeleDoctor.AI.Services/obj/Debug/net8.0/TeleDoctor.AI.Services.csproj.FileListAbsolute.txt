@@ -1,0 +1,16 @@
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/Debug/net8.0/TeleDoctor.AI.Services.csproj.AssemblyReference.cache
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/Debug/net8.0/TeleDoctor.AI.Services.GeneratedMSBuildEditorConfig.editorconfig
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/Debug/net8.0/TeleDoctor.AI.Services.AssemblyInfoInputs.cache
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/Debug/net8.0/TeleDoctor.AI.Services.AssemblyInfo.cs
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/Debug/net8.0/TeleDoctor.AI.Services.csproj.CoreCompileInputs.cache
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/Debug/net8.0/TeleDoctor.AI.Services.sourcelink.json
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/bin/Debug/net8.0/TeleDoctor.AI.Services.deps.json
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/bin/Debug/net8.0/TeleDoctor.AI.Services.dll
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/bin/Debug/net8.0/TeleDoctor.AI.Services.pdb
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/bin/Debug/net8.0/TeleDoctor.Core.dll
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/bin/Debug/net8.0/TeleDoctor.Core.pdb
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/Debug/net8.0/TeleDoct.EAEAAABE.Up2Date
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/Debug/net8.0/TeleDoctor.AI.Services.dll
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/Debug/net8.0/refint/TeleDoctor.AI.Services.dll
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/Debug/net8.0/TeleDoctor.AI.Services.pdb
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/Debug/net8.0/ref/TeleDoctor.AI.Services.dll

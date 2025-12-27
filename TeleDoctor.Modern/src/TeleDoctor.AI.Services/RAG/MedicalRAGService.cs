@@ -358,11 +358,7 @@ public interface IMedicalKnowledgeBase
     Task<List<string>> GetNorwegianMedicalTermsAsync(string query);
 }
 
-public interface IVectorSearchService
-{
-    Task<List<MedicalDocument>> SearchSimilarAsync(float[] embedding, int topK);
-    Task IndexDocumentAsync(MedicalDocument document);
-}
+// IVectorSearchService is defined in VectorSearchService.cs
 
 public class MedicalRAGResponse
 {

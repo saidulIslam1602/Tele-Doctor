@@ -201,3 +201,13 @@ public class SOAPNote
     public string AssessmentNorwegian { get; set; } = string.Empty;
     public string PlanNorwegian { get; set; } = string.Empty;
 }
+
+public class MedicationInteraction
+{
+    public string Medication1 { get; set; } = string.Empty;
+    public string Medication2 { get; set; } = string.Empty;
+    public string Severity { get; set; } = string.Empty; // Low, Medium, High
+    public string Description { get; set; } = string.Empty;
+    public string Recommendation { get; set; } = string.Empty;
+}
+

@@ -57,16 +57,26 @@ public class HelsenorgeIntegrationService : IHelsenorgeIntegrationService
                 _logger.LogInformation("Successfully retrieved patient data from Helsenorge");
                 return patientData;
             }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                _logger.LogWarning("Patient not found in Helsenorge. Status: {StatusCode}", response.StatusCode);
+                return null; // Patient not found is acceptable
+            }
             else
             {
-                _logger.LogWarning("Failed to retrieve patient data from Helsenorge. Status: {StatusCode}", response.StatusCode);
-                return null;
+                _logger.LogError("Failed to retrieve patient data from Helsenorge. Status: {StatusCode}, Reason: {Reason}", 
+                    response.StatusCode, response.ReasonPhrase);
+                throw new HttpRequestException($"Helsenorge API error: {response.StatusCode} - {response.ReasonPhrase}");
             }
+        }
+        catch (HttpRequestException)
+        {
+            throw; // Re-throw HTTP exceptions
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving patient data from Helsenorge");
-            return null;
+            throw new InvalidOperationException("Failed to retrieve patient data from Helsenorge", ex);
         }
     }
 

@@ -1,0 +1,374 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Infrastructure/TeleDoctor.Infrastructure.csproj": {}
+  },
+  "projects": {
+    "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/TeleDoctor.AI.Services.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/TeleDoctor.AI.Services.csproj",
+        "projectName": "TeleDoctor.AI.Services",
+        "projectPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/TeleDoctor.AI.Services.csproj",
+        "packagesPath": "/home/saidul/.nuget/packages/",
+        "outputPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/saidul/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/TeleDoctor.Core.csproj": {
+                "projectPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/TeleDoctor.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Azure.AI.OpenAI": {
+              "target": "Package",
+              "version": "[1.0.0-beta.17, )"
+            },
+            "Azure.AI.TextAnalytics": {
+              "target": "Package",
+              "version": "[5.3.0, )"
+            },
+            "Azure.AI.Translation.Text": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Binder": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.SemanticKernel": {
+              "target": "Package",
+              "version": "[1.0.1, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[8.0.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Application/TeleDoctor.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Application/TeleDoctor.Application.csproj",
+        "projectName": "TeleDoctor.Application",
+        "projectPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Application/TeleDoctor.Application.csproj",
+        "packagesPath": "/home/saidul/.nuget/packages/",
+        "outputPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Application/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/saidul/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/TeleDoctor.AI.Services.csproj": {
+                "projectPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.AI.Services/TeleDoctor.AI.Services.csproj"
+              },
+              "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/TeleDoctor.Core.csproj": {
+                "projectPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/TeleDoctor.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.8.0, )"
+            },
+            "FluentValidation.DependencyInjectionExtensions": {
+              "target": "Package",
+              "version": "[11.8.0, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.2.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/TeleDoctor.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/TeleDoctor.Core.csproj",
+        "projectName": "TeleDoctor.Core",
+        "projectPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/TeleDoctor.Core.csproj",
+        "packagesPath": "/home/saidul/.nuget/packages/",
+        "outputPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/saidul/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "System.ComponentModel.Annotations": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Infrastructure/TeleDoctor.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Infrastructure/TeleDoctor.Infrastructure.csproj",
+        "projectName": "TeleDoctor.Infrastructure",
+        "projectPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Infrastructure/TeleDoctor.Infrastructure.csproj",
+        "packagesPath": "/home/saidul/.nuget/packages/",
+        "outputPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/saidul/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Application/TeleDoctor.Application.csproj": {
+                "projectPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Application/TeleDoctor.Application.csproj"
+              },
+              "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/TeleDoctor.Core.csproj": {
+                "projectPath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/TeleDoctor.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

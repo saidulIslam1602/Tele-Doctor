@@ -1,11 +1,15 @@
 using Azure.AI.OpenAI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TeleDoctor.AI.Services.AgenticFlows;
 using TeleDoctor.AI.Services.Configuration;
 using TeleDoctor.AI.Services.DigitalLabor;
 using TeleDoctor.AI.Services.Interfaces;
 using TeleDoctor.AI.Services.ModelEvaluation;
+using TeleDoctor.AI.Services.Models;
+using Microsoft.Extensions.Options;
+using Azure;
 using TeleDoctor.AI.Services.RAG;
 using TeleDoctor.AI.Services.Services;
 
@@ -28,8 +32,10 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         // Configure AI settings
-        services.Configure<AIConfiguration>(
-            configuration.GetSection(AIConfiguration.SectionName));
+        services.Configure<AIConfiguration>(aiConfigSection => 
+        {
+            configuration.GetSection(AIConfiguration.SectionName).Bind(aiConfigSection);
+        });
 
         // Register Azure OpenAI client
         var aiConfig = configuration.GetSection(AIConfiguration.SectionName).Get<AIConfiguration>();
@@ -107,43 +113,39 @@ public class MedicationAIService : IMedicationAIService
     {
         try
         {
-            _logger.LogInformation("Checking medication interactions for {Count} medications", request.Medications?.Count ?? 0);
+            _logger.LogInformation("Checking medication interactions for {Count} medications", request.CurrentMedications?.Count ?? 0);
             
             var response = new MedicationInteractionResponse
             {
-                HasInteractions = false,
-                Interactions = new List<MedicationInteraction>(),
-                SafetyScore = 1.0
+                Interactions = new List<DrugInteraction>()
             };
             
-            if (request.Medications == null || request.Medications.Count < 2)
+            if (request.CurrentMedications == null || request.CurrentMedications.Count < 2)
                 return response;
             
             // In production: integrate with medication interaction database
             // Examples: DrugBank API, RxNorm, or proprietary interaction databases
             
             // Simulate basic interaction checking
-            for (int i = 0; i < request.Medications.Count; i++)
+            for (int i = 0; i < request.CurrentMedications.Count; i++)
             {
-                for (int j = i + 1; j < request.Medications.Count; j++)
+                for (int j = i + 1; j < request.CurrentMedications.Count; j++)
                 {
                     // In production: query actual interaction database
-                    var interaction = CheckPairInteraction(request.Medications[i], request.Medications[j]);
+                    var interaction = CheckPairInteraction(request.CurrentMedications[i], request.CurrentMedications[j]);
                     if (interaction != null)
                     {
                         response.Interactions.Add(interaction);
-                        response.HasInteractions = true;
                     }
                 }
             }
             
-            response.SafetyScore = CalculateSafetyScore(response.Interactions);
             return response;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error checking medication interactions");
-            return new MedicationInteractionResponse { HasInteractions = false };
+            return new MedicationInteractionResponse();
         }
     }
     
@@ -178,10 +180,9 @@ public class MedicationAIService : IMedicationAIService
             
             return new DosageRecommendation
             {
-                Medication = medication,
-                RecommendedDosage = "As prescribed by physician",
+                RecommendedDose = "As prescribed by physician",
                 Frequency = "Follow prescription",
-                Warnings = new List<string> { "Consult healthcare provider for dosage" }
+                SpecialInstructions = "Consult healthcare provider for dosage"
             };
         }
         catch (Exception ex)
@@ -214,20 +215,81 @@ public class MedicationAIService : IMedicationAIService
         }
     }
     
-    private MedicationInteraction? CheckPairInteraction(string med1, string med2)
+    private DrugInteraction? CheckPairInteraction(string med1, string med2)
     {
-        // In production: query interaction database
-        // For now: return null (no interactions detected)
-        return null;
-    }
-    
-    private double CalculateSafetyScore(List<MedicationInteraction> interactions)
-    {
-        if (!interactions.Any())
-            return 1.0;
+        // Basic medication interaction database
+        // In production: integrate with comprehensive drug interaction databases like First Databank or Micromedex
         
-        var severityScore = interactions.Average(i => i.Severity == "High" ? 0.3 : i.Severity == "Medium" ? 0.7 : 0.9);
-        return Math.Max(0.0, severityScore);
+        var knownInteractions = new Dictionary<string, Dictionary<string, (string Severity, string Description)>>
+        {
+            ["warfarin"] = new Dictionary<string, (string, string)>
+            {
+                ["aspirin"] = ("High", "Increased bleeding risk - concurrent use requires careful monitoring"),
+                ["ibuprofen"] = ("High", "Increased risk of bleeding complications"),
+                ["nsaid"] = ("High", "Significantly increased bleeding risk")
+            },
+            ["metformin"] = new Dictionary<string, (string, string)>
+            {
+                ["contrast"] = ("Medium", "Increased risk of lactic acidosis - hold metformin before contrast procedures")
+            },
+            ["ssri"] = new Dictionary<string, (string, string)>
+            {
+                ["nsaid"] = ("Medium", "Increased bleeding risk, especially gastrointestinal"),
+                ["aspirin"] = ("Medium", "Combined antiplatelet effect increases bleeding risk")
+            },
+            ["ace-inhibitor"] = new Dictionary<string, (string, string)>
+            {
+                ["potassium"] = ("Medium", "Risk of hyperkalemia"),
+                ["nsaid"] = ("Medium", "Reduced effectiveness of ACE inhibitor, kidney function risk")
+            }
+        };
+        
+        // Normalize medication names for comparison
+        var m1 = med1.ToLowerInvariant().Trim();
+        var m2 = med2.ToLowerInvariant().Trim();
+        
+        // Check both directions
+        if (knownInteractions.TryGetValue(m1, out var interactions1) && 
+            interactions1.TryGetValue(m2, out var interaction1))
+        {
+            return new DrugInteraction
+            {
+                Drug1 = med1,
+                Drug2 = med2,
+                Severity = interaction1.Severity,
+                Description = interaction1.Description
+            };
+        }
+        
+        if (knownInteractions.TryGetValue(m2, out var interactions2) && 
+            interactions2.TryGetValue(m1, out var interaction2))
+        {
+            return new DrugInteraction
+            {
+                Drug1 = med2,
+                Drug2 = med1,
+                Severity = interaction2.Severity,
+                Description = interaction2.Description
+            };
+        }
+        
+        // Check for drug class interactions
+        foreach (var drugClass in new[] { "warfarin", "ssri", "ace-inhibitor", "nsaid" })
+        {
+            if (m1.Contains(drugClass) && knownInteractions.TryGetValue(drugClass, out var classInteractions) &&
+                classInteractions.TryGetValue(m2, out var classInteraction))
+            {
+                return new DrugInteraction
+                {
+                    Drug1 = med1,
+                    Drug2 = med2,
+                    Severity = classInteraction.Severity,
+                    Description = classInteraction.Description
+                };
+            }
+        }
+        
+        return null; // No interaction found
     }
 }
 
@@ -251,11 +313,10 @@ public class MedicalImageAIService : IMedicalImageAIService
             
             var response = new MedicalImageAnalysisResponse
             {
-                ImageType = request.ImageType,
-                QualityScore = await CalculateImageQualityScoreAsync(request.ImageData),
-                Findings = new List<string>(),
-                Confidence = 0.0,
-                RequiresProfessionalReview = true
+                Findings = new List<ImageFinding>(),
+                OverallAssessment = "Image requires professional medical interpretation",
+                ConfidenceScore = 0.0,
+                RequiresSpecialistReview = true
             };
             
             return response;
@@ -344,25 +405,32 @@ public class SymptomCheckerService : ISymptomCheckerService
     {
         try
         {
-            _logger.LogInformation("Analyzing {Count} symptoms", request.Symptoms?.Count ?? 0);
+            _logger.LogInformation("Analyzing symptoms: {Symptoms}", request.Symptoms);
             
             var response = new SymptomAnalysisResponse
             {
-                PossibleConditions = new List<string>(),
-                UrgencyLevel = await AssessSymptomUrgencyAsync(request.Symptoms ?? new List<string>()),
+                PossibleConditions = new List<PossibleCondition>(),
                 RecommendedActions = new List<string>
+                {
+                    "Consult with a doctor for thorough evaluation",
+                    "Document symptoms and duration"
+                },
+                RecommendedActionsNorwegian = new List<string>
                 {
                     "Konsulter med lege for en grundig vurdering",
                     "Dokumenter symptomer og varighet"
                 },
-                RequiresImmediateAttention = false
+                Urgency = new UrgencyAssessment()
             };
             
             // Check for emergency symptoms
-            if (request.Symptoms != null && HasEmergencySymptoms(request.Symptoms))
+            var symptomList = request.Symptoms?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.Trim()).ToList() ?? new List<string>();
+            
+            if (symptomList.Any() && HasEmergencySymptoms(symptomList))
             {
-                response.RequiresImmediateAttention = true;
-                response.RecommendedActions.Insert(0, "HASTER: Kontakt legevakt eller ring 113");
+                response.RecommendedActions.Insert(0, "URGENT: Contact emergency services or call 113");
+                response.RecommendedActionsNorwegian.Insert(0, "HASTER: Kontakt legevakt eller ring 113");
             }
             
             return response;

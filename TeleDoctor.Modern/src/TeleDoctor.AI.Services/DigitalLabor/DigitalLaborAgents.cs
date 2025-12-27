@@ -73,7 +73,7 @@ public class SchedulingAgent : IHealthcareAgent
                 "ConfirmAvailability" => await ConfirmDoctorAvailabilityAsync(context),
                 "ResourceAllocation" => await AllocateResourcesAsync(context),
                 "ScheduleFollowUp" => await ScheduleFollowUpAppointmentAsync(context),
-                _ => throw new NotImplementedException($"Step not implemented: {step.Name}")
+                _ => await HandleUnknownStepAsync(step.Name, context)
             };
 
             return new AgentExecutionResult
@@ -208,6 +208,23 @@ public class SchedulingAgent : IHealthcareAgent
         var response = await _openAIClient.GetChatCompletionsAsync(chatCompletionsOptions);
         return response.Value.Choices[0].Message.Content;
     }
+
+    private async Task<Dictionary<string, object>> HandleUnknownStepAsync(string stepName, AgentContext context)
+    {
+        _logger.LogWarning("Unknown step requested: {StepName}. Using AI fallback.", stepName);
+        
+        var systemPrompt = $"You are a scheduling assistant. Handle the following task: {stepName}";
+        var userPrompt = $"Context: {string.Join(", ", context.InputContext.Select(kv => $"{kv.Key}={kv.Value}"))}";
+        
+        var response = await GetAIResponseAsync(systemPrompt, userPrompt);
+        
+        return new Dictionary<string, object>
+        {
+            { "stepName", stepName },
+            { "handled", true },
+            { "result", response }
+        };
+    }
 }
 #endregion
 
@@ -264,7 +281,7 @@ public class DocumentationAgent : IHealthcareAgent
                 "Documentation" => await GenerateDocumentationAsync(context),
                 "PrepareDocuments" => await PrepareAppointmentDocumentsAsync(context),
                 "DocumentInitialAssessment" => await DocumentInitialAssessmentAsync(context),
-                _ => throw new NotImplementedException($"Step not implemented: {step.Name}")
+                _ => await HandleUnknownDocumentationStepAsync(step.Name, context)
             };
 
             return new AgentExecutionResult
@@ -410,6 +427,23 @@ public class DocumentationAgent : IHealthcareAgent
         var response = await _openAIClient.GetChatCompletionsAsync(chatCompletionsOptions);
         return response.Value.Choices[0].Message.Content;
     }
+
+    private async Task<Dictionary<string, object>> HandleUnknownDocumentationStepAsync(string stepName, AgentContext context)
+    {
+        _logger.LogWarning("Unknown documentation step requested: {StepName}. Using AI fallback.", stepName);
+        
+        var systemPrompt = $"You are a clinical documentation assistant. Handle the following task: {stepName}";
+        var userPrompt = $"Context: {string.Join(", ", context.InputContext.Select(kv => $"{kv.Key}={kv.Value}"))}";
+        
+        var response = await GetAIResponseAsync(systemPrompt, userPrompt);
+        
+        return new Dictionary<string, object>
+        {
+            { "stepName", stepName },
+            { "handled", true },
+            { "documentation", response }
+        };
+    }
 }
 #endregion
 
@@ -463,7 +497,7 @@ public class TriageAgent : IHealthcareAgent
                 "Triage" => await PerformTriageAsync(context),
                 "AnalyzeRequest" => await AnalyzeAppointmentRequestAsync(context),
                 "AssessUrgency" => await AssessUrgencyAsync(context),
-                _ => throw new NotImplementedException($"Step not implemented: {step.Name}")
+                _ => await HandleUnknownTriageStepAsync(step.Name, context)
             };
 
             return new AgentExecutionResult
@@ -574,6 +608,7 @@ public class TriageAgent : IHealthcareAgent
         };
     }
 
+
     private async Task<string> GetAIResponseAsync(string systemPrompt, string userPrompt)
     {
         var chatCompletionsOptions = new ChatCompletionsOptions()
@@ -591,7 +626,25 @@ public class TriageAgent : IHealthcareAgent
         var response = await _openAIClient.GetChatCompletionsAsync(chatCompletionsOptions);
         return response.Value.Choices[0].Message.Content;
     }
+
+    private async Task<Dictionary<string, object>> HandleUnknownTriageStepAsync(string stepName, AgentContext context)
+    {
+        _logger.LogWarning("Unknown triage step requested: {StepName}. Using AI fallback.", stepName);
+        
+        var systemPrompt = $"You are a triage assistant. Handle the following task: {stepName}";
+        var userPrompt = $"Context: {string.Join(", ", context.InputContext.Select(kv => $"{kv.Key}={kv.Value}"))}";
+        
+        var response = await GetAIResponseAsync(systemPrompt, userPrompt);
+        
+        return new Dictionary<string, object>
+        {
+            { "stepName", stepName },
+            { "handled", true },
+            { "triageResult", response }
+        };
+    }
 }
 #endregion
 
 // Additional agents (CommunicationAgent, AdministrativeAgent, ClinicalDecisionAgent) would follow similar patterns...
+

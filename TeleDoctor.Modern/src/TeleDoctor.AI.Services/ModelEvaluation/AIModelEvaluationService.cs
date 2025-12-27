@@ -768,8 +768,8 @@ public class AIModelEvaluationService : IAIModelEvaluationService
         // In production: implement proper data transformation
         return new EvaluationTestDataset
         {
-            TestCases = new List<EvaluationSample>(),
-            CreatedAt = DateTime.UtcNow
+            ClinicalCases = new List<ClinicalTestCase>(),
+            Dataset = new EvaluationDataset()
         };
     }
 
@@ -799,8 +799,8 @@ public class AIModelEvaluationService : IAIModelEvaluationService
         if (performance.AverageLatency > 1000)
             recommendations.Add("High latency detected - optimize model or infrastructure");
         
-        if (safety.SafetyViolations.Any())
-            recommendations.Add($"Safety violations detected: {string.Join(", ", safety.SafetyViolations)}");
+        if (safety.HighRiskCases > 0)
+            recommendations.Add($"Safety concerns detected: {safety.HighRiskCases} high-risk cases found");
         
         if (drift.DriftDetected)
             recommendations.Add("Model drift detected - consider retraining");
@@ -816,7 +816,7 @@ public class AIModelEvaluationService : IAIModelEvaluationService
         // In production: store results in database or Application Insights
         // For audit trail and trend analysis
         _logger.LogInformation("Storing evaluation results for model: {ModelId} at {Timestamp}",
-            report.ModelId, report.EvaluationTimestamp);
+            report.ModelId, report.GeneratedAt);
         
         // Implementation would store to database or logging service
         await Task.CompletedTask;

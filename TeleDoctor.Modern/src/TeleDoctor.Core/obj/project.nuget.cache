@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "48SsSfMEWkE=",
+  "success": true,
+  "projectFilePath": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/TeleDoctor.Core.csproj",
+  "expectedPackageFiles": [
+    "/home/saidul/.nuget/packages/system.componentmodel.annotations/5.0.0/system.componentmodel.annotations.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

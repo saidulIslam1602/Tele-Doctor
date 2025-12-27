@@ -1,0 +1,12 @@
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/bin/Debug/net8.0/TeleDoctor.Core.deps.json
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/bin/Debug/net8.0/TeleDoctor.Core.dll
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/bin/Debug/net8.0/TeleDoctor.Core.pdb
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/obj/Debug/net8.0/TeleDoctor.Core.GeneratedMSBuildEditorConfig.editorconfig
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/obj/Debug/net8.0/TeleDoctor.Core.AssemblyInfoInputs.cache
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/obj/Debug/net8.0/TeleDoctor.Core.AssemblyInfo.cs
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/obj/Debug/net8.0/TeleDoctor.Core.csproj.CoreCompileInputs.cache
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/obj/Debug/net8.0/TeleDoctor.Core.sourcelink.json
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/obj/Debug/net8.0/TeleDoctor.Core.dll
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/obj/Debug/net8.0/refint/TeleDoctor.Core.dll
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/obj/Debug/net8.0/TeleDoctor.Core.pdb
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Core/obj/Debug/net8.0/ref/TeleDoctor.Core.dll

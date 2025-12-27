@@ -1,0 +1,16 @@
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/bin/Debug/net8.0/TeleDoctor.Norwegian.Integration.deps.json
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/bin/Debug/net8.0/TeleDoctor.Norwegian.Integration.dll
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/bin/Debug/net8.0/TeleDoctor.Norwegian.Integration.pdb
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/bin/Debug/net8.0/TeleDoctor.Core.dll
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/bin/Debug/net8.0/TeleDoctor.Core.pdb
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/obj/Debug/net8.0/TeleDoctor.Norwegian.Integration.csproj.AssemblyReference.cache
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/obj/Debug/net8.0/TeleDoctor.Norwegian.Integration.GeneratedMSBuildEditorConfig.editorconfig
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/obj/Debug/net8.0/TeleDoctor.Norwegian.Integration.AssemblyInfoInputs.cache
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/obj/Debug/net8.0/TeleDoctor.Norwegian.Integration.AssemblyInfo.cs
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/obj/Debug/net8.0/TeleDoctor.Norwegian.Integration.csproj.CoreCompileInputs.cache
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/obj/Debug/net8.0/TeleDoctor.Norwegian.Integration.sourcelink.json
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/obj/Debug/net8.0/TeleDoct.99907280.Up2Date
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/obj/Debug/net8.0/TeleDoctor.Norwegian.Integration.dll
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/obj/Debug/net8.0/refint/TeleDoctor.Norwegian.Integration.dll
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/obj/Debug/net8.0/TeleDoctor.Norwegian.Integration.pdb
+/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.Norwegian.Integration/obj/Debug/net8.0/ref/TeleDoctor.Norwegian.Integration.dll

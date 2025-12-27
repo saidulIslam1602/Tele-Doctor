@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "/home/saidul/Desktop/compello As/Tele-Doctor/TeleDoctor.Modern/src/TeleDoctor.BlazorUI/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.TeleDoctor.BlazorUI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.TeleDoctor.BlazorUI.props",
+      "PackagePath": "build\\TeleDoctor.BlazorUI.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.TeleDoctor.BlazorUI.props",
+      "PackagePath": "buildMultiTargeting\\TeleDoctor.BlazorUI.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.TeleDoctor.BlazorUI.props",
+      "PackagePath": "buildTransitive\\TeleDoctor.BlazorUI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
