@@ -56,49 +56,59 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
     /// <summary>
     /// Adds a new entity to the database
+    /// Note: Changes are not saved until UnitOfWork.SaveChangesAsync() is called
     /// </summary>
     public virtual async Task<T> AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
-        await _context.SaveChangesAsync();
+        // Removed: await _context.SaveChangesAsync();
+        // UnitOfWork is responsible for calling SaveChangesAsync to commit the transaction
         return entity;
     }
 
     /// <summary>
     /// Adds multiple entities to the database
+    /// Note: Changes are not saved until UnitOfWork.SaveChangesAsync() is called
     /// </summary>
     public virtual async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
     {
         await _dbSet.AddRangeAsync(entities);
-        await _context.SaveChangesAsync();
+        // Removed: await _context.SaveChangesAsync();
+        // UnitOfWork is responsible for calling SaveChangesAsync to commit the transaction
         return entities;
     }
 
     /// <summary>
     /// Updates an existing entity
+    /// Note: Changes are not saved until UnitOfWork.SaveChangesAsync() is called
     /// </summary>
     public virtual async Task UpdateAsync(T entity)
     {
         _dbSet.Update(entity);
-        await _context.SaveChangesAsync();
+        // Removed: await _context.SaveChangesAsync();
+        // UnitOfWork is responsible for calling SaveChangesAsync to commit the transaction
     }
 
     /// <summary>
     /// Deletes an entity (soft delete by default)
+    /// Note: Changes are not saved until UnitOfWork.SaveChangesAsync() is called
     /// </summary>
     public virtual async Task DeleteAsync(T entity)
     {
         _dbSet.Remove(entity);
-        await _context.SaveChangesAsync();
+        // Removed: await _context.SaveChangesAsync();
+        // UnitOfWork is responsible for calling SaveChangesAsync to commit the transaction
     }
 
     /// <summary>
     /// Deletes multiple entities (soft delete by default)
+    /// Note: Changes are not saved until UnitOfWork.SaveChangesAsync() is called
     /// </summary>
     public virtual async Task DeleteRangeAsync(IEnumerable<T> entities)
     {
         _dbSet.RemoveRange(entities);
-        await _context.SaveChangesAsync();
+        // Removed: await _context.SaveChangesAsync();
+        // UnitOfWork is responsible for calling SaveChangesAsync to commit the transaction
     }
 
     /// <summary>

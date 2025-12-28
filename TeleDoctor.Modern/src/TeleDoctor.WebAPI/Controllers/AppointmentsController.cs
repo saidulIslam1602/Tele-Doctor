@@ -93,6 +93,7 @@ public class AppointmentsController : ControllerBase
             }
 
             var created = await _unitOfWork.Appointments.AddAsync(appointment);
+            await _unitOfWork.SaveChangesAsync(); // Commit the transaction
             
             _logger.LogInformation("Created appointment {AppointmentId}", created.Id);
             
@@ -134,6 +135,7 @@ public class AppointmentsController : ControllerBase
             }
 
             await _unitOfWork.Appointments.UpdateAsync(appointment);
+            await _unitOfWork.SaveChangesAsync(); // Commit the transaction
             
             _logger.LogInformation("Updated appointment {AppointmentId}", id);
             
@@ -166,6 +168,7 @@ public class AppointmentsController : ControllerBase
             }
 
             await _unitOfWork.Appointments.DeleteAsync(appointment);
+            await _unitOfWork.SaveChangesAsync(); // Commit the transaction
             
             _logger.LogInformation("Deleted appointment {AppointmentId}", id);
             

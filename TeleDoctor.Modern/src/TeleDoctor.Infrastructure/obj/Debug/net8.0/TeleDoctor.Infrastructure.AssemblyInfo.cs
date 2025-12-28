@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TeleDoctor.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f5c3472b1f4da6f73044cee77a887ddd8f6df076")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bad3842b8bc12e9739483dc10bbb8c5205a8ae30")]
 [assembly: System.Reflection.AssemblyProductAttribute("TeleDoctor.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TeleDoctor.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

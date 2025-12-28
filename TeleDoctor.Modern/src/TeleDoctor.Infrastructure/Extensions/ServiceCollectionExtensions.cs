@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TeleDoctor.Core.Interfaces;
 using TeleDoctor.Infrastructure.Data;
 using TeleDoctor.Infrastructure.Repositories;
+using TeleDoctor.Infrastructure.Services;
 
 namespace TeleDoctor.Infrastructure.Extensions;
 
@@ -54,6 +55,26 @@ public static class ServiceCollectionExtensions
 
         // Register Unit of Work
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        // Register Cache Service (uses IDistributedCache)
+        // For production: use AddStackExchangeRedisCache with Redis connection string
+        // For development: uses in-memory cache
+        var redisConnection = configuration.GetConnectionString("Redis");
+        if (!string.IsNullOrEmpty(redisConnection))
+        {
+            // Redis cache (requires Microsoft.Extensions.Caching.StackExchangeRedis package)
+            // services.AddStackExchangeRedisCache(options =>
+            // {
+            //     options.Configuration = redisConnection;
+            //     options.InstanceName = "TeleDoctor:";
+            // });
+        }
+        else
+        {
+            // Fallback to in-memory distributed cache for development
+            services.AddDistributedMemoryCache();
+        }
+        services.AddScoped<ICacheService, RedisCacheService>();
 
         return services;
     }
